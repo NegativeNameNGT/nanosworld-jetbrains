@@ -167,7 +167,7 @@ function generateReturns(rets?: DocReturn[]): string {
 		.map((ret) => {
 			const type = generateType(ret);
 			return `\n---@return ${
-				type.toString() + (type.optional ? "?" : "")
+				type.toString() + (type.optional ? " | nil" : "")
 			} ${generateInlineDocstring(ret)}`;
 		})
 		.join("");
@@ -181,7 +181,7 @@ function generateInlineReturns(rets?: DocReturn[], areAllOptional?: boolean): st
 		rets
 			.map((ret) => {
 				const type = generateType(ret);
-				return type.toString() + (areAllOptional || type.optional ? "?" : "");
+				return type.toString() + (areAllOptional || type.optional ? " | nil" : "");
 			})
 			.join(", ")
 	);
@@ -198,11 +198,19 @@ function generateParams(params?: DocParameter[]): {
 		param.name = param.name ?? "missing_name";
 		if (param.name.endsWith("...")) param.name = "...";
 
-		const type = generateType(param);
-		ret.string += `\n---@param ${param.name}${
-			type.optional ? "?" : ""
-		} ${type.toString()} ${generateParamDocstring(param)}`;
-		ret.names += param.name + ", ";
+		if (param.name.endsWith("?")) {
+			param.name = param.name.slice(0, -1);
+		}
+		
+		if (param.name.includes("/")) {
+			param.name = param.name.split("/")[0];
+		}
+
+        const type = generateType(param);
+        ret.string += `\n---@param ${param.name} ${type.toString()}${
+            type.optional ? " | nil" : ""
+        } ${generateParamDocstring(param)}`;
+        ret.names += param.name + ", ";
 	});
 
 	ret.names = ret.names.slice(0, -2);
@@ -214,9 +222,9 @@ function generateInlineParams(params: DocParameter[]): string {
 		.map((param) => {
 			param.name = param.name ?? "missing_name";
 			const type = generateType(param);
-			return `${param.name}${
-				type.optional ? "?" : ""
-			}: ${type.toString()}`;
+			return `${param.name}: ${type.toString()}${
+				type.optional ? " | nil" : ""
+			}`;
 		})
 		.join(", ");
 }
@@ -303,11 +311,11 @@ function generateClassAnnotations(
 				callbackSig = event.arguments
 					.map((param, idx) => {
 						const type = generateType(param);
-						return `${param.name}${type.optional ? "?" : ""}: ${
+						return `${param.name}: ${
 							idx !== 0 || param.name !== "self"
 								? type.toString()
 								: cls.name
-						}`;
+						}${type.optional ? " | nil" : ""}`;
 					})
 					.join(", ");
 			}
@@ -341,7 +349,7 @@ function ${cls.name}${
 
 ---Unsubscribe from an event
 ---@param event_name string @Name of the event to unsubscribe from
----@param callback? function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)${unsubOverloads}
+---@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)${unsubOverloads}
 function ${cls.name}${
 			cls.staticClass ? "." : ":"
 		}Unsubscribe(event_name, callback) end`;
