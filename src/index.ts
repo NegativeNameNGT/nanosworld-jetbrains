@@ -367,9 +367,15 @@ function ${cls.name}${
 
 	let static_fields = "";
 	if (cls.static_properties !== undefined) {
+		static_fields += " ";
 		cls.static_properties.forEach((prop, index) => {
 			static_fields += `${prop.name} = ${prop.value}`;
+
+			if (index < cls.static_properties.length - 1) {
+				static_fields += ", ";
+			}
 		});
+		static_fields += " ";
 	}
 
 	let operators = "";
