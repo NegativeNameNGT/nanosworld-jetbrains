@@ -365,7 +365,7 @@ function ${cls.name}${
 		});
 	}
 
-	const staticFields = cls.static_properties?.length ? `\n${cls.static_properties.map(field => `${name}.${field.name} = ${field.value}`).join("\n")}` : "";
+	const staticFields = cls.static_properties?.length ? `\n${cls.static_properties.map(field => `${cls.name}.${field.name} = ${field.value}`).join("\n")}` : "";
 
 	let operators = "";
 	if (cls.operators !== undefined) {
