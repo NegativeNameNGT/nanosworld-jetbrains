@@ -28,6 +28,11 @@ export interface DocProperty extends DocDescriptive, DocTyped {
 	name: string;
 }
 
+export interface DocStaticProperty extends DocDescriptive, DocTyped {
+	name: string;
+	value: string;
+}
+
 export interface DocReturn extends DocDescriptive, DocTyped {}
 
 export interface DocFunction extends DocDescriptive, DocAuthority {
@@ -62,6 +67,7 @@ export interface DocClass extends DocDescriptive, DocAuthority {
 	static_functions?: DocFunction[];
 	events?: DocEvent[];
 	properties?: DocProperty[];
+	static_properties?: DocStaticProperty[];
 	operators?: DocOperator[];
 	staticClass: boolean;
 }
