@@ -28,6 +28,11 @@ export interface DocProperty extends DocDescriptive, DocTyped {
 	name: string;
 }
 
+export interface DocStaticProperty extends DocDescriptive, DocTyped {
+	name: string;
+	value: string;
+}
+
 export interface DocReturn extends DocDescriptive, DocTyped {}
 
 export interface DocFunction extends DocDescriptive, DocAuthority {
