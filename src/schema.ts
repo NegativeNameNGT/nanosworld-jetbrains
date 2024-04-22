@@ -67,6 +67,7 @@ export interface DocClass extends DocDescriptive, DocAuthority {
 	static_functions?: DocFunction[];
 	events?: DocEvent[];
 	properties?: DocProperty[];
+	static_properties?: DocStaticProperty[];
 	operators?: DocOperator[];
 	staticClass: boolean;
 }
