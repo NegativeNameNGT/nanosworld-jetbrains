@@ -357,22 +357,7 @@ function ${cls.name}${
 		});
 	}
 
-	let static_fields = "";
-	if (cls.static_properties !== undefined) {
-		static_fields += " ";
-
-		const length = cls.static_properties.length - 1;
-		cls.static_properties.forEach((prop, index) => {
-			static_fields += `${prop.name} = ${prop.value}`;
-			
-			if (index < length)
-			{
-				static_fields += ", ";
-			}
-		});
-
-		static_fields += " ";
-	}
+	const staticFields = cls.static_properties?.map(field => `${field.name} = ${field.value}`).join(", ") ?? "";
 
 	let operators = "";
 	if (cls.operators !== undefined) {
@@ -392,7 +377,7 @@ function ${cls.name}${
 ---
 ---${generateDocstring(cls)}
 ---@class ${cls.name}${inheritance}${fields}${operators}${constructors}
-${cls.name} = {${static_fields}}${staticFunctions}${functions}${events}`;
+${cls.name} = {${staticFields}}${staticFunctions}${functions}${events}`;
 }
 
 function generateEnum(name: string, values: DocEnumValue[]): string {
