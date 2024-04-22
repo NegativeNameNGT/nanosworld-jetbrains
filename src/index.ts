@@ -364,6 +364,16 @@ function ${cls.name}${
 		});
 	}
 
+	let static_fields = "";
+	if (cls.static_properties !== undefined) {
+		cls.static_properties.forEach((prop, index) => {
+			static_fields += `${prop.name} = ${prop.value}`;
+			if (index < cls.static_properties.length - 1) {
+				static_fields += ", ";
+			}
+		});
+	}
+
 	let operators = "";
 	if (cls.operators !== undefined) {
 		cls.operators.forEach((op) => {
@@ -382,7 +392,7 @@ function ${cls.name}${
 ---
 ---${generateDocstring(cls)}
 ---@class ${cls.name}${inheritance}${fields}${operators}${constructors}
-${cls.name} = {test}${staticFunctions}${functions}${events}`;
+${cls.name} = {${static_fields}}${staticFunctions}${functions}${events}`;
 }
 
 function generateEnum(name: string, values: DocEnumValue[]): string {
