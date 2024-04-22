@@ -366,7 +366,8 @@ function ${cls.name}${
 	}
 
 	const staticFields = cls.static_properties?.map((...) => `foo = bar`).join(", ") ?? "";
-
+	print(staticFields)
+	
 	let operators = "";
 	if (cls.operators !== undefined) {
 		cls.operators.forEach((op) => {
@@ -385,7 +386,7 @@ function ${cls.name}${
 ---
 ---${generateDocstring(cls)}
 ---@class ${cls.name}${inheritance}${fields}${operators}${constructors}
-${cls.name} = {${JSON.stringify(staticFields)}}${staticFunctions}${functions}${events}`;
+${cls.name} = {}}${staticFunctions}${functions}${events}`;
 }
 
 function generateEnum(name: string, values: DocEnumValue[]): string {
