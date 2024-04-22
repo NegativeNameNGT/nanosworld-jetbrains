@@ -371,9 +371,7 @@ function ${cls.name}${
 		cls.static_properties.forEach((prop, index) => {
 			static_fields += `${prop.name} = ${prop.value}`;
 
-			if (cls.static_properties !== undefined && index !== cls.static_properties.length - 1)
-				static_fields += ",";
-			}
+			console.log(index);
 		});
 		static_fields += " ";
 	}
