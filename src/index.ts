@@ -385,7 +385,7 @@ function ${cls.name}${
 ---
 ---${generateDocstring(cls)}
 ---@class ${cls.name}${inheritance}${fields}${operators}${constructors}
-${cls.name} = {${staticFields}}${staticFunctions}${functions}${events}`;
+${cls.name} = {${JSON.stringify(staticFields)}}${staticFunctions}${functions}${events}`;
 }
 
 function generateEnum(name: string, values: DocEnumValue[]): string {
