@@ -14,6 +14,7 @@ import {
 	DocEnumValue,
 	DocDescriptive,
 	DocProperty,
+	DocStaticProperty,
 	DocTyped,
 	DocConstructor,
 } from "./schema";
@@ -356,6 +357,8 @@ function ${cls.name}${
 		});
 	}
 
+	const staticFields = cls.static_properties?.map(field => `${field.name} = ${field.value}`).join(", ") ?? "";
+
 	let operators = "";
 	if (cls.operators !== undefined) {
 		cls.operators.forEach((op) => {
@@ -374,7 +377,7 @@ function ${cls.name}${
 ---
 ---${generateDocstring(cls)}
 ---@class ${cls.name}${inheritance}${fields}${operators}${constructors}
-${cls.name} = {}${staticFunctions}${functions}${events}`;
+${cls.name} = {${staticFields}}${staticFunctions}${functions}${events}`;
 }
 
 function generateEnum(name: string, values: DocEnumValue[]): string {
