@@ -368,16 +368,15 @@ function ${cls.name}${
 	let static_fields = "";
 	if (cls.static_properties !== undefined) {
 		static_fields += " ";
+
+		const length = cls.static_properties.length - 1;
 		cls.static_properties.forEach((prop, index) => {
 			static_fields += `${prop.name} = ${prop.value}`;
-
-if (cls.static_properties !== undefined && Array.isArray(cls.static_properties)) {
-    const length = cls.static_properties.length;
-    console.log(`Length of static_properties: ${length}`);
-} else {
-    console.log("static_properties is not properly defined or is not an array.");
-}
-
+			
+			if (index < length)
+			{
+				static_fields += ", ";
+			}
 		});
 		static_fields += " ";
 	}
