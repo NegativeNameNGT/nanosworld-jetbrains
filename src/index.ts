@@ -369,6 +369,7 @@ function ${cls.name}${
                     cls.static_properties.map(item => `foo = bar`).join(", ") : 
                     "";
 
+	print(staticFields)
 	
 	let operators = "";
 	if (cls.operators !== undefined) {
