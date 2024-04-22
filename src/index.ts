@@ -365,9 +365,8 @@ function ${cls.name}${
 		});
 	}
 
-	const staticFields = cls && cls.static_properties ? 
-                    cls.static_properties.map(item => `foo = bar`).join(", ") : 
-                    "";
+	const staticFields = cls.static_properties?.map(item => `${item.name} = ${item.value}`).join(", ") ?? "";
+
 
 	console.log(staticFields)
 	
