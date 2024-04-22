@@ -14,6 +14,7 @@ import {
 	DocEnumValue,
 	DocDescriptive,
 	DocProperty,
+	DocStaticProperty,
 	DocTyped,
 	DocConstructor,
 } from "./schema";
