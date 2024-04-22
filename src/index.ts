@@ -371,7 +371,13 @@ function ${cls.name}${
 		cls.static_properties.forEach((prop, index) => {
 			static_fields += `${prop.name} = ${prop.value}`;
 
-			console.log(cls.static_properties);
+if (cls.static_properties !== undefined && Array.isArray(cls.static_properties)) {
+    const length = cls.static_properties.length;
+    console.log(`Length of static_properties: ${length}`);
+} else {
+    console.log("static_properties is not properly defined or is not an array.");
+}
+
 		});
 		static_fields += " ";
 	}
