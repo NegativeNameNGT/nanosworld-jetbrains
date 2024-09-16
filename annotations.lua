@@ -1,5 +1,12 @@
 ---@meta
 
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---A Billboard is a 2D Material that will be rendered always facing the camera.
+---@class Billboard : Entity, Actor, Paintable
+---@overload fun(location: Vector, material_asset: string, size: Vector2D | nil, size_in_screen_space: boolean | nil): Billboard
+Billboard = {}
+
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
 ---VehicleWater are entities which Characters can possesses and drive over the water with dynamic physics.
@@ -62,13 +69,6 @@ function Widget3D:Subscribe(event_name, callback) end
 ---@overload fun(self: Widget3D, event_name: "ClassRegister", callback: fun(class: table)) @Triggered when a new Class is registered with the <a href='/docs/core-concepts/scripting/inheriting-classes'>Inheriting System</a>
 ---@overload fun(self: Widget3D, event_name: "DimensionChange", callback: fun(self: Widget3D, old_dimension: integer, new_dimension: integer)) @Triggered when an Actor changes it's dimension
 function Widget3D:Unsubscribe(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----A Billboard is a 2D Material that will be rendered always facing the camera.
----@class Billboard : Entity, Actor, Paintable
----@overload fun(location: Vector, material_asset: string, size: Vector2D | nil, size_in_screen_space: boolean | nil): Billboard
-Billboard = {}
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
@@ -188,6 +188,97 @@ function Blueprint:SetBlueprintPropertyValue(property_name, value) end
 ---@param property_name string 
 ---@return any @the value
 function Blueprint:GetBlueprintPropertyValue(property_name) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---A StaticMesh entity represents a Mesh which can be spawned in the world, can't move and is more optimized for using in decorating the world.
+---@class StaticMesh : Entity, Actor, Paintable
+---@overload fun(location: Vector, rotation: Rotator, static_mesh_asset: string, collision_type: CollisionType | nil): StaticMesh
+StaticMesh = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/authority-only.png?raw=true" height="10"> `Authority Side`
+---
+---Changes the mesh in runtime
+---@param static_mesh_asset string @asset
+function StaticMesh:SetMesh(static_mesh_asset) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets the Asset path mesh used
+---@return string @asset path
+function StaticMesh:GetMesh() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Gets if this StaticMesh is from the Level
+---@return boolean @if this StaticMesh is from the level
+function StaticMesh:IsFromLevel() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Gets a Socket Transform in world space given a bone name
+---@param socket_name string 
+---@return { Location: Vector, Rotation: Rotator } 
+function StaticMesh:GetSocketTransform(socket_name) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---A Text Render class is useful for spawning Texts in 3D world, you can even attach it to other entities.
+---@class TextRender : Entity, Actor, Paintable
+---@overload fun(location: Vector, rotation: Rotator, text: string, scale: Vector | nil, color: Color | nil, font_type: FontType | nil, align_camera: TextRenderAlignCamera | nil): TextRender
+TextRender = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Color (Internally this will call the <code>SetMaterialColorParameter("Tint", color)</code> method)
+---@param color Color 
+function TextRender:SetColor(color) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Font
+---@param font_type FontType 
+function TextRender:SetFont(font_type) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Freeze mesh rebuild, to avoid unnecessary mesh rebuilds when setting a few properties together
+---@param freeze boolean 
+function TextRender:SetFreeze(freeze) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Glyph representation settings to generate the 3D Mesh for this text render
+---@param extrude number | nil @(Default: 0)
+---@param level number | nil @(Default: 0)
+---@param bevel_type TextRenderBevelType | nil @(Default: TextRenderBevelType.Convex)
+---@param bevel_segments integer | nil @(Default: 8)
+---@param outline boolean | nil @(Default: false)
+function TextRender:SetGlyphSettings(extrude, level, bevel_type, bevel_segments, outline) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Max Size of the TextRender, optionally scaling it proportionally
+---@param max_width integer | nil @(Default: 0)
+---@param max_height integer | nil @(Default: 0)
+---@param scale_proportionally boolean | nil @(Default: true)
+function TextRender:SetMaxSize(max_width, max_height, scale_proportionally) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Text
+---@param text string 
+function TextRender:SetText(text) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Text & Font settings for this text render
+---@param kerning number | nil @(Default: 0)
+---@param line_spacing number | nil @(Default: 0)
+---@param word_spacing number | nil @(Default: 0)
+---@param horizontal_alignment TextRenderHorizontalAlignment | nil @(Default: TextRenderHorizontalAlignment.Center)
+---@param vertical_alignment TextRenderVerticalAlignment | nil @(Default: 0TextRenderVerticalAlignment.Center)
+function TextRender:SetTextSettings(kerning, line_spacing, word_spacing, horizontal_alignment, vertical_alignment) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
@@ -387,143 +478,6 @@ function Trigger:Unsubscribe(event_name, callback) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
 ---
----A StaticMesh entity represents a Mesh which can be spawned in the world, can't move and is more optimized for using in decorating the world.
----@class StaticMesh : Entity, Actor, Paintable
----@overload fun(location: Vector, rotation: Rotator, static_mesh_asset: string, collision_type: CollisionType | nil): StaticMesh
-StaticMesh = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/authority-only.png?raw=true" height="10"> `Authority Side`
----
----Changes the mesh in runtime
----@param static_mesh_asset string @asset
-function StaticMesh:SetMesh(static_mesh_asset) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets the Asset path mesh used
----@return string @asset path
-function StaticMesh:GetMesh() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Gets if this StaticMesh is from the Level
----@return boolean @if this StaticMesh is from the level
-function StaticMesh:IsFromLevel() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Gets a Socket Transform in world space given a bone name
----@param socket_name string 
----@return { Location: Vector, Rotation: Rotator } 
-function StaticMesh:GetSocketTransform(socket_name) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----A Text Render class is useful for spawning Texts in 3D world, you can even attach it to other entities.
----@class TextRender : Entity, Actor, Paintable
----@overload fun(location: Vector, rotation: Rotator, text: string, scale: Vector | nil, color: Color | nil, font_type: FontType | nil, align_camera: TextRenderAlignCamera | nil): TextRender
-TextRender = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Color (Internally this will call the <code>SetMaterialColorParameter("Tint", color)</code> method)
----@param color Color 
-function TextRender:SetColor(color) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Font
----@param font_type FontType 
-function TextRender:SetFont(font_type) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Freeze mesh rebuild, to avoid unnecessary mesh rebuilds when setting a few properties together
----@param freeze boolean 
-function TextRender:SetFreeze(freeze) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Glyph representation settings to generate the 3D Mesh for this text render
----@param extrude number | nil @(Default: 0)
----@param level number | nil @(Default: 0)
----@param bevel_type TextRenderBevelType | nil @(Default: TextRenderBevelType.Convex)
----@param bevel_segments integer | nil @(Default: 8)
----@param outline boolean | nil @(Default: false)
-function TextRender:SetGlyphSettings(extrude, level, bevel_type, bevel_segments, outline) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Max Size of the TextRender, optionally scaling it proportionally
----@param max_width integer | nil @(Default: 0)
----@param max_height integer | nil @(Default: 0)
----@param scale_proportionally boolean | nil @(Default: true)
-function TextRender:SetMaxSize(max_width, max_height, scale_proportionally) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Text
----@param text string 
-function TextRender:SetText(text) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Text & Font settings for this text render
----@param kerning number | nil @(Default: 0)
----@param line_spacing number | nil @(Default: 0)
----@param word_spacing number | nil @(Default: 0)
----@param horizontal_alignment TextRenderHorizontalAlignment | nil @(Default: TextRenderHorizontalAlignment.Center)
----@param vertical_alignment TextRenderVerticalAlignment | nil @(Default: 0TextRenderVerticalAlignment.Center)
-function TextRender:SetTextSettings(kerning, line_spacing, word_spacing, horizontal_alignment, vertical_alignment) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----The Database entity provides programmers a way to access SQL databases easily through scripting.
----@class Database
----@overload fun(database_engine: DatabaseEngine, connection_string: string, pool_size: integer | nil): Database
-Database = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Closes the Database
-function Database:Close() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Execute a query asynchronously
----@param query string @Query to execute
----@param callback function | nil @Callback (Default: nil)
----@param ... any | nil @Sequence of parameters to escape into the Query (Default: nil)
-function Database:ExecuteAsync(query, callback, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Execute a query synchronously
----@param query string @Query to execute
----@param ... any | nil @Sequence of parameters to escape into the Query (Default: nil)
----@return integer @affected rows
----@return string @error (if any)
-function Database:Execute(query, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Execute a select query asynchronously
----@param query string @Query to execute
----@param callback function | nil @Callback (Default: nil)
----@param ... any | nil @Sequence of parameters to escape into the Query (Default: nil)
-function Database:SelectAsync(query, callback, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Selects a query synchronously
----@param query string @Query to execute
----@param ... any | nil @Sequence of parameters to escape into the Query (Default: nil)
----@return table[] @rows fetched
----@return string @error (if any)
-function Database:Select(query, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
 ---Base class for all Paintable entities. This class provides customization for materials, exposing common functions to allow you to set custom material parameters, including loading textures from disk.
 ---@class Paintable
 Paintable = {}
@@ -605,6 +559,93 @@ function Paintable:SetMaterialVectorParameter(parameter_name, vector, index, att
 ---Overrides this Actor's Physical Material with a new one
 ---@param physical_material_path string @The Physical Material to override
 function Paintable:SetPhysicalMaterial(physical_material_path) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Class to spawn Particle Systems used to create effects in the world.
+---@class Particle : Entity, Actor
+---@overload fun(location: Vector, rotation: Rotator, asset: string, auto_destroy: boolean | nil, auto_activate: boolean | nil): Particle
+Particle = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Activates the Emitter
+---@param should_reset boolean @If should reset
+function Particle:Activate(should_reset) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Deactivate the Emitter
+function Particle:Deactivate() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns if this Particle is active
+---@return boolean 
+function Particle:IsActive() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets a float parameter in this Particle System
+---@param parameter string @The parameter name
+---@param value number @The float value
+function Particle:SetParameterFloat(parameter, value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets an integer parameter in this Particle System
+---@param parameter string @The parameter name
+---@param value integer @The int value
+function Particle:SetParameterInt(parameter, value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets a boolean parameter in this Particle System
+---@param parameter string @The parameter name
+---@param value boolean @The boolean value
+function Particle:SetParameterBool(parameter, value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets a Vector parameter in this Particle System
+---@param parameter string @The parameter name
+---@param value Vector @The Vector value
+function Particle:SetParameterVector(parameter, value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets a Color parameter in this Particle System
+---@param parameter string @The parameter name
+---@param value Color @The Color value
+function Particle:SetParameterColor(parameter, value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets a Material parameter in this Particle System
+---@param parameter string @The parameter name
+---@param value string @The Material value
+function Particle:SetParameterMaterial(parameter, value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---This will create a Material and set this Texture as it's parameter internally, then set the Material into the Particle parameter
+---@param parameter string @The parameter name
+---@param value string @The Texture value
+function Particle:SetParameterMaterialFromTexture(parameter, value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---This will create a Material and set this Canvas as it's parameter internally, then set the Material into the Particle parameter
+---@param parameter string @The parameter name
+---@param value Canvas @The Canvas value
+function Particle:SetParameterMaterialFromCanvas(parameter, value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---This will create a Material and set this WebUI as it's parameter internally, then set the Material into the Particle parameter
+---@param parameter string @The parameter name
+---@param value WebUI @The WebUI value
+function Particle:SetParameterMaterialFromWebUI(parameter, value) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
@@ -718,93 +759,6 @@ function Melee:Subscribe(event_name, callback) end
 ---@overload fun(self: Melee, event_name: "ReleaseUse", callback: fun(self: Melee, character: Character)) @Triggered when a Character releases the use button for this Pickable (i.e. releases left mouse button with this equipped)
 ---@overload fun(self: Melee, event_name: "Attack", callback: fun(self: Melee, handler: Character)) @Triggered when the Character effectively attacks with this Melee
 function Melee:Unsubscribe(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Class to spawn Particle Systems used to create effects in the world.
----@class Particle : Entity, Actor
----@overload fun(location: Vector, rotation: Rotator, asset: string, auto_destroy: boolean | nil, auto_activate: boolean | nil): Particle
-Particle = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Activates the Emitter
----@param should_reset boolean @If should reset
-function Particle:Activate(should_reset) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Deactivate the Emitter
-function Particle:Deactivate() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns if this Particle is active
----@return boolean 
-function Particle:IsActive() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets a float parameter in this Particle System
----@param parameter string @The parameter name
----@param value number @The float value
-function Particle:SetParameterFloat(parameter, value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets an integer parameter in this Particle System
----@param parameter string @The parameter name
----@param value integer @The int value
-function Particle:SetParameterInt(parameter, value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets a boolean parameter in this Particle System
----@param parameter string @The parameter name
----@param value boolean @The boolean value
-function Particle:SetParameterBool(parameter, value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets a Vector parameter in this Particle System
----@param parameter string @The parameter name
----@param value Vector @The Vector value
-function Particle:SetParameterVector(parameter, value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets a Color parameter in this Particle System
----@param parameter string @The parameter name
----@param value Color @The Color value
-function Particle:SetParameterColor(parameter, value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets a Material parameter in this Particle System
----@param parameter string @The parameter name
----@param value string @The Material value
-function Particle:SetParameterMaterial(parameter, value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----This will create a Material and set this Texture as it's parameter internally, then set the Material into the Particle parameter
----@param parameter string @The parameter name
----@param value string @The Texture value
-function Particle:SetParameterMaterialFromTexture(parameter, value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----This will create a Material and set this Canvas as it's parameter internally, then set the Material into the Particle parameter
----@param parameter string @The parameter name
----@param value Canvas @The Canvas value
-function Particle:SetParameterMaterialFromCanvas(parameter, value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----This will create a Material and set this WebUI as it's parameter internally, then set the Material into the Particle parameter
----@param parameter string @The parameter name
----@param value WebUI @The WebUI value
-function Particle:SetParameterMaterialFromWebUI(parameter, value) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
@@ -1123,6 +1077,352 @@ function Prop:Subscribe(event_name, callback) end
 ---@overload fun(self: Prop, event_name: "UnGrab", callback: fun(self: Prop, character: Character)) @Triggered when this Prop is ungrabbed
 function Prop:Unsubscribe(event_name, callback) end
 
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---CharacterSimple is a simpler Character implementation with basic Movement implementation. Aimed for custom NPCs or basic Pawns.
+---@class CharacterSimple : Entity, Actor, Pawn, Paintable, Damageable
+---@overload fun(location: Vector, rotation: Rotator, mesh: string|string, custom_animation_blueprint: string | nil, collision_type: CollisionType | nil, gravity_enabled: boolean | nil): CharacterSimple
+CharacterSimple = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/authority-only.png?raw=true" height="10"> `Authority Side`
+---
+---Changes the Character Mesh on the fly
+---@param mesh_asset string|string 
+---@param adjust_capsule_size boolean @Auto adjust the capsule size based on the Mesh size
+function CharacterSimple:SetMesh(mesh_asset, adjust_capsule_size) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/authority-only.png?raw=true" height="10"> `Authority Side`
+---
+---Plays an Animation Montage on this character
+---@param animation_path string 
+---@param slot_name string | nil @(Default: "")
+---@param loop_indefinitely boolean | nil @(Default: false)
+---@param blend_in_time number | nil @(Default: 0.25)
+---@param blend_out_time number | nil @(Default: 0.25)
+---@param play_rate number | nil @(Default: 1.0)
+---@param stop_all_montages boolean | nil @Stops all running Montages from the same Group (Default: false)
+function CharacterSimple:PlayAnimation(animation_path, slot_name, loop_indefinitely, blend_in_time, blend_out_time, play_rate, stop_all_montages) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/authority-only.png?raw=true" height="10"> `Authority Side`
+---
+---Changes the Character Mesh on the fly
+---@param mesh string|string 
+---@param adjust_capsule_size boolean @Auto adjust the capsule size based on the Mesh size
+function CharacterSimple:SetMesh(mesh, adjust_capsule_size) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the max acceleration
+---@param acceleration integer @Default is 2048
+function CharacterSimple:SetMaxAcceleration(acceleration) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the Spring Arm Settings of this Character
+---@param relative_location Vector 
+---@param target_arm_length number 
+---@param socket_offset Vector 
+---@param enable_camera_lag boolean 
+---@param camera_lag_speed number 
+function CharacterSimple:SetSpringArmSettings(relative_location, target_arm_length, socket_offset, enable_camera_lag, camera_lag_speed) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the Rotation Settings of this Character
+---@param rotation_rate Rotator 
+---@param use_controller_desired_rotation boolean 
+---@param orient_rotation_to_movement boolean 
+function CharacterSimple:SetRotationSettings(rotation_rate, use_controller_desired_rotation, orient_rotation_to_movement) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the Speed Settings of this Character
+---@param max_walk_speed integer 
+---@param max_walk_speed_crouched integer 
+function CharacterSimple:SetSpeedSettings(max_walk_speed, max_walk_speed_crouched) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the Pawn Settings of this Character
+---@param use_controller_rotation_pitch boolean 
+---@param use_controller_rotation_yaw boolean 
+---@param use_controller_rotation_roll boolean 
+function CharacterSimple:SetPawnSettings(use_controller_rotation_pitch, use_controller_rotation_yaw, use_controller_rotation_roll) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the amount of movement control allowed when it is in air
+---@param air_control number | nil @When falling, amount of lateral movement control available to the character. 0 = no control, 1 = full control at max speed of MaxWalkSpeed (Default: 0.2)
+---@param boost_multiplier number | nil @When falling, multiplier applied to air_control when lateral velocity is less than boost_velocity_threshold. Setting this to zero will disable air control boosting. Final result is clamped at 1 (Default: 512)
+---@param boost_velocity_threshold number | nil @When falling, if lateral velocity magnitude is less than this value, air_control is multiplied by boost_multiplier. Setting this to zero will disable air control boosting (Default: 25)
+function CharacterSimple:SetAirControl(air_control, boost_multiplier, boost_velocity_threshold) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the Animation Blueprint of this Character
+---@param custom_animation_blueprint string 
+function CharacterSimple:SetAnimationBlueprint(custom_animation_blueprint) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Calls an Animation Blueprint Event or Function<br/>Returns all Function return values on <strong>Client Side</strong>
+---@param event_name string @Event or Function name
+---@param ... any | nil @Sequence of arguments to pass to the event (Default: nil)
+---@return any... @the function return values
+function CharacterSimple:CallAnimationBlueprintEvent(event_name, ...) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Grenades are Pickables which Characters can grab and throw. It explodes after X seconds after thrown, causing damage around.
+---@class Grenade : Entity, Actor, Paintable, Pickable
+---@overload fun(location: Vector, rotation: Rotator, static_mesh_asset: string | nil, explosion_particles: string | nil, explosion_sound: string | nil, collision_type: CollisionType | nil, gravity_enabled: boolean | nil): Grenade
+Grenade = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Forces this grenade to Explode
+function Grenade:Explode() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets Damage parameters of this Grenade
+---@param base_damage integer | nil @Max damage when inner radius (Default: 90)
+---@param minimum_damage integer | nil @Min damage when outer radius (Default: 0)
+---@param damage_inner_radius integer | nil @Radius which damage will be 100% (Default: 200)
+---@param damage_outer_radius integer | nil @Radius which damage will be interpoled through falloff (Default: 1000)
+---@param damage_falloff number | nil @Lerp function between Max and Min damage (Default: 1)
+function Grenade:SetDamage(base_damage, minimum_damage, damage_inner_radius, damage_outer_radius, damage_falloff) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Set Time until Explosion after thrown
+---@param time number @Time in seconds
+function Grenade:SetTimeToExplode(time) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Set Impulse applied when throwing
+---@param throw_force integer 
+function Grenade:SetThrowForce(throw_force) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Damage at Inner Radius
+---@return number 
+function Grenade:GetBaseDamage() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Radius which BaseDamage will apply proportionally
+---@return number 
+function Grenade:GetDamageFalloff() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Radius which MinimumDamage will apply
+---@return number 
+function Grenade:GetDamageInnerRadius() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Radius which BaseDamage will apply
+---@return number 
+function Grenade:GetDamageOuterRadius() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Damage at Outer Radius
+---@return number 
+function Grenade:GetMinimumDamage() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Time until Explosion
+---@return number 
+function Grenade:GetTimeToExplode() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Impulse applied when throwing
+---@return number 
+function Grenade:GetThrowForce() end
+
+---Subscribe to an event
+---@param event_name string @Name of the event to subscribe to
+---@param callback function @Function to call when the event is triggered
+---@return function @The callback function passed
+---@overload fun(self: Grenade, event_name: "Spawn", callback: fun(self: Grenade)): fun(self: Grenade) @Triggered when an Entity is spawned/created
+---@overload fun(self: Grenade, event_name: "Destroy", callback: fun(self: Grenade)): fun(self: Grenade) @Triggered when an Entity is destroyed
+---@overload fun(self: Grenade, event_name: "ValueChange", callback: fun(self: Grenade, key: string, value: any)): fun(self: Grenade, key: string, value: any) @Triggered when an Entity has a value changed with <code>:SetValue()</code>
+---@overload fun(self: Grenade, event_name: "ClassRegister", callback: fun(class: table)): fun(class: table) @Triggered when a new Class is registered with the <a href='/docs/core-concepts/scripting/inheriting-classes'>Inheriting System</a>
+---@overload fun(self: Grenade, event_name: "DimensionChange", callback: fun(self: Grenade, old_dimension: integer, new_dimension: integer)): fun(self: Grenade, old_dimension: integer, new_dimension: integer) @Triggered when an Actor changes it's dimension
+---@overload fun(self: Grenade, event_name: "Drop", callback: fun(self: Grenade, character: Character, was_triggered_by_player: boolean)): fun(self: Grenade, character: Character, was_triggered_by_player: boolean) @When a Character drops this Pickable
+---@overload fun(self: Grenade, event_name: "Hit", callback: fun(self: Grenade, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector)): fun(self: Grenade, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector) @When this Pickable hits something
+---@overload fun(self: Grenade, event_name: "Interact", callback: fun(self: Grenade, character: Character): boolean | nil): fun(self: Grenade, character: Character): boolean | nil @Triggered when a Character interacts with this Pickable (i.e. tries to pick it up)
+---@overload fun(self: Grenade, event_name: "PickUp", callback: fun(self: Grenade, character: Character)): fun(self: Grenade, character: Character) @Triggered When a Character picks this up
+---@overload fun(self: Grenade, event_name: "PullUse", callback: fun(self: Grenade, character: Character)): fun(self: Grenade, character: Character) @Triggered when a Character presses the use button for this Pickable (i.e. clicks left mouse button with this equipped)
+---@overload fun(self: Grenade, event_name: "ReleaseUse", callback: fun(self: Grenade, character: Character)): fun(self: Grenade, character: Character) @Triggered when a Character releases the use button for this Pickable (i.e. releases left mouse button with this equipped)
+---@overload fun(self: Grenade, event_name: "Explode", callback: fun(self: Grenade)): fun(self: Grenade) @Triggered when the grenade has exploded
+---@overload fun(self: Grenade, event_name: "Throw", callback: fun(self: Grenade, handler: Character)): fun(self: Grenade, handler: Character) @Triggered when the grenade has been thrown
+function Grenade:Subscribe(event_name, callback) end
+
+---Unsubscribe from an event
+---@param event_name string @Name of the event to unsubscribe from
+---@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
+---@overload fun(self: Grenade, event_name: "Spawn", callback: fun(self: Grenade)) @Triggered when an Entity is spawned/created
+---@overload fun(self: Grenade, event_name: "Destroy", callback: fun(self: Grenade)) @Triggered when an Entity is destroyed
+---@overload fun(self: Grenade, event_name: "ValueChange", callback: fun(self: Grenade, key: string, value: any)) @Triggered when an Entity has a value changed with <code>:SetValue()</code>
+---@overload fun(self: Grenade, event_name: "ClassRegister", callback: fun(class: table)) @Triggered when a new Class is registered with the <a href='/docs/core-concepts/scripting/inheriting-classes'>Inheriting System</a>
+---@overload fun(self: Grenade, event_name: "DimensionChange", callback: fun(self: Grenade, old_dimension: integer, new_dimension: integer)) @Triggered when an Actor changes it's dimension
+---@overload fun(self: Grenade, event_name: "Drop", callback: fun(self: Grenade, character: Character, was_triggered_by_player: boolean)) @When a Character drops this Pickable
+---@overload fun(self: Grenade, event_name: "Hit", callback: fun(self: Grenade, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector)) @When this Pickable hits something
+---@overload fun(self: Grenade, event_name: "Interact", callback: fun(self: Grenade, character: Character): boolean | nil) @Triggered when a Character interacts with this Pickable (i.e. tries to pick it up)
+---@overload fun(self: Grenade, event_name: "PickUp", callback: fun(self: Grenade, character: Character)) @Triggered When a Character picks this up
+---@overload fun(self: Grenade, event_name: "PullUse", callback: fun(self: Grenade, character: Character)) @Triggered when a Character presses the use button for this Pickable (i.e. clicks left mouse button with this equipped)
+---@overload fun(self: Grenade, event_name: "ReleaseUse", callback: fun(self: Grenade, character: Character)) @Triggered when a Character releases the use button for this Pickable (i.e. releases left mouse button with this equipped)
+---@overload fun(self: Grenade, event_name: "Explode", callback: fun(self: Grenade)) @Triggered when the grenade has exploded
+---@overload fun(self: Grenade, event_name: "Throw", callback: fun(self: Grenade, handler: Character)) @Triggered when the grenade has been thrown
+function Grenade:Unsubscribe(event_name, callback) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---<b>Pickables</b> are special Actors which can be <b>grabbed</b>, <b>held</b> and <b>used</b> by Characters.
+---@class Pickable
+Pickable = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Spawns and attaches a SkeletalMesh to this Pickable, the SkeletalMesh must have the same skeleton used by this Actor's mesh, and will follow all animations from it. Uses a custom ID to be used for removing/customizing it afterwards
+---@param id string @Used further for removing or applying material settings on it
+---@param skeletal_mesh_path string @Path to SkeletalMesh asset to attach
+---@param use_parent_bounds boolean | nil @If true, this component uses its parents bounds when attached. This can be a significant optimization with many components attached together (Default: true)
+function Pickable:AddSkeletalMeshAttached(id, skeletal_mesh_path, use_parent_bounds) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Spawns and attaches a StaticMesh to this Pickable in a Socket with a relative location and rotation. Uses a custom ID to be used for removing/customizing it afterwards
+---@param id string @Unique ID to assign to the StaticMesh
+---@param static_mesh_path string @Path to StaticMesh asset to attach
+---@param socket string | nil @Bone socket to attach to (Default: "")
+---@param relative_location Vector | nil @Relative location (Default: Vector(0, 0, 0))
+---@param relative_rotation Rotator | nil @Relative rotation (Default: Rotator(0, 0, 0))
+---@param use_parent_bounds boolean | nil @If true, this component uses its parents bounds when attached. This can be a significant optimization with many components attached together (Default: true)
+function Pickable:AddStaticMeshAttached(id, static_mesh_path, socket, relative_location, relative_rotation, use_parent_bounds) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets all Static Meshes attached to this entity
+---@return string[] @the key as the Attached ID, and the value as the Asset Path
+function Pickable:GetAllStaticMeshAttached() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets all Skeletal Meshes attached to this entity
+---@return string[] @the key as the Attached ID, and the value as the Asset Path
+function Pickable:GetAllSkeletalMeshAttached() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Removes, if it exists, a SkeletalMesh from this Pickable given its custom ID
+---@param id string @Unique ID of the SkeletalMesh to remove
+function Pickable:RemoveSkeletalMeshAttached(id) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets a Static Mesh Attached location and rotation
+---@param id string @Unique ID of the StaticMesh set with AddStaticMeshAttached
+---@param relative_location Vector @New relative location
+---@param relative_rotation Rotator @New relative rotation
+function Pickable:SetStaticMeshAttachedTransform(id, relative_location, relative_rotation) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Removes, if it exists, a StaticMesh from this Pickable given its custom ID
+---@param id string @Unique ID of the StaticMesh to remove
+function Pickable:RemoveStaticMeshAttached(id) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Removes all StaticMeshes attached
+function Pickable:RemoveAllStaticMeshesAttached() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Removes all SkeletalMeshes attached
+function Pickable:RemoveAllSkeletalMeshesAttached() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Pulls the usage of this Pickable (will start firing if this is a weapon)
+---@param release_use_after number | nil @Time in seconds to automatically release the usage (-1 will not release, 0 will release one tick after) (Default: -1)
+function Pickable:PullUse(release_use_after) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Releases the usage of this Pickable (will stop firing if this is a weapon)
+function Pickable:ReleaseUse() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the Attachment Settings for this Pickable (how it attaches to the Character when Picking up)
+---@param relative_location Vector @Location relative to the Socket
+---@param relative_rotation Rotator | nil @Rotation relative to the Socket (Default: Rotator(0, 0, 0))
+---@param socket string | nil @Character Socket to attach to when picked up (Default: hand_r_socket)
+function Pickable:SetAttachmentSettings(relative_location, relative_rotation, socket) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the crosshair material for this Pickable
+---@param material_asset string @Asset path to the crosshair material
+function Pickable:SetCrosshairMaterial(material_asset) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets if this Pickable can be picked up from ground by the player
+---@param is_pickable boolean 
+function Pickable:SetPickable(is_pickable) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets the name of the asset this Pickable uses
+---@return string 
+function Pickable:GetMesh() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets the Character, if it exists, that's holding this Pickable
+---@return Character | nil 
+function Pickable:GetHandler() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets the Handling Mode of this Pickable
+---@return HandlingMode 
+function Pickable:GetHandlingMode() end
+
+---Subscribe to an event
+---@param event_name string @Name of the event to subscribe to
+---@param callback function @Function to call when the event is triggered
+---@return function @The callback function passed
+---@overload fun(self: Pickable, event_name: "Drop", callback: fun(self: Pickable, character: Character, was_triggered_by_player: boolean)): fun(self: Pickable, character: Character, was_triggered_by_player: boolean) @When a Character drops this Pickable
+---@overload fun(self: Pickable, event_name: "Hit", callback: fun(self: Pickable, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector)): fun(self: Pickable, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector) @When this Pickable hits something
+---@overload fun(self: Pickable, event_name: "Interact", callback: fun(self: Pickable, character: Character): boolean | nil): fun(self: Pickable, character: Character): boolean | nil @Triggered when a Character interacts with this Pickable (i.e. tries to pick it up)
+---@overload fun(self: Pickable, event_name: "PickUp", callback: fun(self: Pickable, character: Character)): fun(self: Pickable, character: Character) @Triggered When a Character picks this up
+---@overload fun(self: Pickable, event_name: "PullUse", callback: fun(self: Pickable, character: Character)): fun(self: Pickable, character: Character) @Triggered when a Character presses the use button for this Pickable (i.e. clicks left mouse button with this equipped)
+---@overload fun(self: Pickable, event_name: "ReleaseUse", callback: fun(self: Pickable, character: Character)): fun(self: Pickable, character: Character) @Triggered when a Character releases the use button for this Pickable (i.e. releases left mouse button with this equipped)
+function Pickable:Subscribe(event_name, callback) end
+
+---Unsubscribe from an event
+---@param event_name string @Name of the event to unsubscribe from
+---@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
+---@overload fun(self: Pickable, event_name: "Drop", callback: fun(self: Pickable, character: Character, was_triggered_by_player: boolean)) @When a Character drops this Pickable
+---@overload fun(self: Pickable, event_name: "Hit", callback: fun(self: Pickable, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector)) @When this Pickable hits something
+---@overload fun(self: Pickable, event_name: "Interact", callback: fun(self: Pickable, character: Character): boolean | nil) @Triggered when a Character interacts with this Pickable (i.e. tries to pick it up)
+---@overload fun(self: Pickable, event_name: "PickUp", callback: fun(self: Pickable, character: Character)) @Triggered When a Character picks this up
+---@overload fun(self: Pickable, event_name: "PullUse", callback: fun(self: Pickable, character: Character)) @Triggered when a Character presses the use button for this Pickable (i.e. clicks left mouse button with this equipped)
+---@overload fun(self: Pickable, event_name: "ReleaseUse", callback: fun(self: Pickable, character: Character)) @Triggered when a Character releases the use button for this Pickable (i.e. releases left mouse button with this equipped)
+function Pickable:Unsubscribe(event_name, callback) end
+
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
 ---The Widget class supports spawning Unreal Widgets classes through scripting and manipulate them such as Blueprints!
@@ -1415,99 +1715,97 @@ function WebUI:Subscribe(event_name, callback) end
 ---@overload fun(self: WebUI, event_name: "Ready", callback: fun()) @Triggered when this page is fully loaded
 function WebUI:Unsubscribe(event_name, callback) end
 
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
----CharacterSimple is a simpler Character implementation with basic Movement implementation. Aimed for custom NPCs or basic Pawns.
----@class CharacterSimple : Entity, Actor, Pawn, Paintable, Damageable
----@overload fun(location: Vector, rotation: Rotator, mesh: string|string, custom_animation_blueprint: string | nil, collision_type: CollisionType | nil, gravity_enabled: boolean | nil): CharacterSimple
-CharacterSimple = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/authority-only.png?raw=true" height="10"> `Authority Side`
----
----Changes the Character Mesh on the fly
----@param mesh_asset string|string 
----@param adjust_capsule_size boolean @Auto adjust the capsule size based on the Mesh size
-function CharacterSimple:SetMesh(mesh_asset, adjust_capsule_size) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/authority-only.png?raw=true" height="10"> `Authority Side`
----
----Plays an Animation Montage on this character
----@param animation_path string 
----@param slot_name string | nil @(Default: "")
----@param loop_indefinitely boolean | nil @(Default: false)
----@param blend_in_time number | nil @(Default: 0.25)
----@param blend_out_time number | nil @(Default: 0.25)
----@param play_rate number | nil @(Default: 1.0)
----@param stop_all_montages boolean | nil @Stops all running Montages from the same Group (Default: false)
-function CharacterSimple:PlayAnimation(animation_path, slot_name, loop_indefinitely, blend_in_time, blend_out_time, play_rate, stop_all_montages) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/authority-only.png?raw=true" height="10"> `Authority Side`
----
----Changes the Character Mesh on the fly
----@param mesh string|string 
----@param adjust_capsule_size boolean @Auto adjust the capsule size based on the Mesh size
-function CharacterSimple:SetMesh(mesh, adjust_capsule_size) end
+---A Cable represents a Physics Constraint which joins two Actors with a rope-like visual representation between them.
+---@class Cable : Entity, Actor, Paintable
+---@overload fun(location: Vector, enable_visuals: boolean | nil): Cable
+Cable = {}
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
----Sets the max acceleration
----@param acceleration integer @Default is 2048
-function CharacterSimple:SetMaxAcceleration(acceleration) end
+---Attached the beginning of this cable to another Actor at a specific bone or relative location
+---@param other Actor 
+---@param relative_location Vector | nil @(Default: Vector(0, 0, 0))
+---@param bone_name string | nil @(Default: "")
+function Cable:AttachStartTo(other, relative_location, bone_name) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
----Sets the Spring Arm Settings of this Character
----@param relative_location Vector 
----@param target_arm_length number 
----@param socket_offset Vector 
----@param enable_camera_lag boolean 
----@param camera_lag_speed number 
-function CharacterSimple:SetSpringArmSettings(relative_location, target_arm_length, socket_offset, enable_camera_lag, camera_lag_speed) end
+---Attached the end of this cable to another Actor at a specific bone or relative location
+---@param other Actor 
+---@param relative_location Vector | nil @(Default: Vector(0, 0, 0))
+---@param bone_name string | nil @(Default: "")
+function Cable:AttachEndTo(other, relative_location, bone_name) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
----Sets the Rotation Settings of this Character
----@param rotation_rate Rotator 
----@param use_controller_desired_rotation boolean 
----@param orient_rotation_to_movement boolean 
-function CharacterSimple:SetRotationSettings(rotation_rate, use_controller_desired_rotation, orient_rotation_to_movement) end
+---Detaches the End of this Cable
+function Cable:DetachEnd() end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
----Sets the Speed Settings of this Character
----@param max_walk_speed integer 
----@param max_walk_speed_crouched integer 
-function CharacterSimple:SetSpeedSettings(max_walk_speed, max_walk_speed_crouched) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sets the Pawn Settings of this Character
----@param use_controller_rotation_pitch boolean 
----@param use_controller_rotation_yaw boolean 
----@param use_controller_rotation_roll boolean 
-function CharacterSimple:SetPawnSettings(use_controller_rotation_pitch, use_controller_rotation_yaw, use_controller_rotation_roll) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sets the amount of movement control allowed when it is in air
----@param air_control number | nil @When falling, amount of lateral movement control available to the character. 0 = no control, 1 = full control at max speed of MaxWalkSpeed (Default: 0.2)
----@param boost_multiplier number | nil @When falling, multiplier applied to air_control when lateral velocity is less than boost_velocity_threshold. Setting this to zero will disable air control boosting. Final result is clamped at 1 (Default: 512)
----@param boost_velocity_threshold number | nil @When falling, if lateral velocity magnitude is less than this value, air_control is multiplied by boost_multiplier. Setting this to zero will disable air control boosting (Default: 25)
-function CharacterSimple:SetAirControl(air_control, boost_multiplier, boost_velocity_threshold) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sets the Animation Blueprint of this Character
----@param custom_animation_blueprint string 
-function CharacterSimple:SetAnimationBlueprint(custom_animation_blueprint) end
+---Detaches the Start of this Cable
+function Cable:DetachStart() end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
 ---
----Calls an Animation Blueprint Event or Function<br/>Returns all Function return values on <strong>Client Side</strong>
----@param event_name string @Event or Function name
----@param ... any | nil @Sequence of arguments to pass to the event (Default: nil)
----@return any... @the function return values
-function CharacterSimple:CallAnimationBlueprintEvent(event_name, ...) end
+---Set the overall settings for this cable (visuals only)
+---@param length number @Rest length of the cable. Default is 100
+---@param num_segments integer @How many segments the cable has. Default is 10
+---@param solver_iterations integer @The number of solver iterations controls how 'stiff' the cable is. Default is 0
+function Cable:SetCableSettings(length, num_segments, solver_iterations) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Set the forces the cable has applied (visuals only)
+---@param force Vector @Force vector (world space) applied to all particles in cable. Default is Vector(0, 0, 0)
+---@param gravity_scale number | nil @Scaling applied to world gravity affecting this cable. Default is 1 (Default: 1)
+function Cable:SetForces(force, gravity_scale) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the Physics Angular Limits of this cable
+---@param swing_1_motion ConstraintMotion @Indicates whether the Swing1 limit is used
+---@param swing_2_motion ConstraintMotion @Indicates whether the Swing2 limit is used
+---@param twist_motion ConstraintMotion @Indicates whether the Twist limit is used
+---@param swing_1_limit number | nil @Angle of movement along the XY plane. This defines the first symmetric angle of the cone (Default: 0)
+---@param swing_2_limit number | nil @Angle of movement along the XZ plane. This defines the second symmetric angle of the cone (Default: 0)
+---@param twist_limit number | nil @Symmetric angle of roll along the X-axis (Default: 0)
+function Cable:SetAngularLimits(swing_1_motion, swing_2_motion, twist_motion, swing_1_limit, swing_2_limit, twist_limit) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the Physics Linear Limits of this cable. If use_soft_constraint is enabled, then stiffness and damping will be used, otherwise restitution will be used.
+---@param x_motion ConstraintMotion @Indicates the linear constraint applied along the X-axis. Free implies no constraint at all. Locked implies no movement along X is allowed. Limited implies the distance in the joint along all active axes must be less than the Distance provided
+---@param y_motion ConstraintMotion @Indicates the linear constraint applied along the Y-axis. Free implies no constraint at all. Locked implies no movement along Y is allowed. Limited implies the distance in the joint along all active axes must be less than the Distance provided
+---@param z_motion ConstraintMotion @Indicates the linear constraint applied along theZX-axis. Free implies no constraint at all. Locked implies no movement along Z is allowed. Limited implies the distance in the joint along all active axes must be less than the Distance provided
+---@param limit number | nil @The distance allowed between between the two joint reference frames. Distance applies on all axes enabled (one axis means line, two axes implies circle, three axes implies sphere) (Default: 0)
+---@param restitution number | nil @Controls the amount of bounce when the constraint is violated. A restitution value of 1 will bounce back with the same velocity the limit was hit. A value of 0 will stop dead (Default: 0)
+---@param use_soft_constraint boolean | nil @Whether we want to use a soft constraint (spring) (Default: false)
+---@param stiffness number | nil @Stiffness of the soft constraint. Only used when Soft Constraint is on (Default: 0)
+---@param damping number | nil @Damping of the soft constraint. Only used when Soft Constraint is on (Default: 0)
+function Cable:SetLinearLimits(x_motion, y_motion, z_motion, limit, restitution, use_soft_constraint, stiffness, damping) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Set the rendering settings of this cable (visuals only)
+---@param width number @How wide the cable geometry is. Default is 6
+---@param num_sides integer @Number of sides of the cable geometry. Default is 4
+---@param tile_material integer @How many times to repeat the material along the length of the cable. Default is 1
+function Cable:SetRenderingSettings(width, num_sides, tile_material) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets the Actor attached to Start
+---@return Actor @the Actor or nil
+function Cable:GetAttachedStartTo() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets the Actor attached to End
+---@return Actor @the Actor or nil
+function Cable:GetAttachedEndTo() end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
 ---
@@ -1680,641 +1978,49 @@ function File:Write(data) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
----Grenades are Pickables which Characters can grab and throw. It explodes after X seconds after thrown, causing damage around.
----@class Grenade : Entity, Actor, Paintable, Pickable
----@overload fun(location: Vector, rotation: Rotator, static_mesh_asset: string | nil, explosion_particles: string | nil, explosion_sound: string | nil, collision_type: CollisionType | nil, gravity_enabled: boolean | nil): Grenade
-Grenade = {}
+---The Database entity provides programmers a way to access SQL databases easily through scripting.
+---@class Database
+---@overload fun(database_engine: DatabaseEngine, connection_string: string, pool_size: integer | nil): Database
+Database = {}
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
----Forces this grenade to Explode
-function Grenade:Explode() end
+---Closes the Database
+function Database:Close() end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
----Sets Damage parameters of this Grenade
----@param base_damage integer | nil @Max damage when inner radius (Default: 90)
----@param minimum_damage integer | nil @Min damage when outer radius (Default: 0)
----@param damage_inner_radius integer | nil @Radius which damage will be 100% (Default: 200)
----@param damage_outer_radius integer | nil @Radius which damage will be interpoled through falloff (Default: 1000)
----@param damage_falloff number | nil @Lerp function between Max and Min damage (Default: 1)
-function Grenade:SetDamage(base_damage, minimum_damage, damage_inner_radius, damage_outer_radius, damage_falloff) end
+---Execute a query asynchronously
+---@param query string @Query to execute
+---@param callback function | nil @Callback (Default: nil)
+---@param ... any | nil @Sequence of parameters to escape into the Query (Default: nil)
+function Database:ExecuteAsync(query, callback, ...) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
----Set Time until Explosion after thrown
----@param time number @Time in seconds
-function Grenade:SetTimeToExplode(time) end
+---Execute a query synchronously
+---@param query string @Query to execute
+---@param ... any | nil @Sequence of parameters to escape into the Query (Default: nil)
+---@return integer @affected rows
+---@return string @error (if any)
+function Database:Execute(query, ...) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
----Set Impulse applied when throwing
----@param throw_force integer 
-function Grenade:SetThrowForce(throw_force) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Damage at Inner Radius
----@return number 
-function Grenade:GetBaseDamage() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Radius which BaseDamage will apply proportionally
----@return number 
-function Grenade:GetDamageFalloff() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Radius which MinimumDamage will apply
----@return number 
-function Grenade:GetDamageInnerRadius() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Radius which BaseDamage will apply
----@return number 
-function Grenade:GetDamageOuterRadius() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Damage at Outer Radius
----@return number 
-function Grenade:GetMinimumDamage() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Time until Explosion
----@return number 
-function Grenade:GetTimeToExplode() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Impulse applied when throwing
----@return number 
-function Grenade:GetThrowForce() end
-
----Subscribe to an event
----@param event_name string @Name of the event to subscribe to
----@param callback function @Function to call when the event is triggered
----@return function @The callback function passed
----@overload fun(self: Grenade, event_name: "Spawn", callback: fun(self: Grenade)): fun(self: Grenade) @Triggered when an Entity is spawned/created
----@overload fun(self: Grenade, event_name: "Destroy", callback: fun(self: Grenade)): fun(self: Grenade) @Triggered when an Entity is destroyed
----@overload fun(self: Grenade, event_name: "ValueChange", callback: fun(self: Grenade, key: string, value: any)): fun(self: Grenade, key: string, value: any) @Triggered when an Entity has a value changed with <code>:SetValue()</code>
----@overload fun(self: Grenade, event_name: "ClassRegister", callback: fun(class: table)): fun(class: table) @Triggered when a new Class is registered with the <a href='/docs/core-concepts/scripting/inheriting-classes'>Inheriting System</a>
----@overload fun(self: Grenade, event_name: "DimensionChange", callback: fun(self: Grenade, old_dimension: integer, new_dimension: integer)): fun(self: Grenade, old_dimension: integer, new_dimension: integer) @Triggered when an Actor changes it's dimension
----@overload fun(self: Grenade, event_name: "Drop", callback: fun(self: Grenade, character: Character, was_triggered_by_player: boolean)): fun(self: Grenade, character: Character, was_triggered_by_player: boolean) @When a Character drops this Pickable
----@overload fun(self: Grenade, event_name: "Hit", callback: fun(self: Grenade, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector)): fun(self: Grenade, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector) @When this Pickable hits something
----@overload fun(self: Grenade, event_name: "Interact", callback: fun(self: Grenade, character: Character): boolean | nil): fun(self: Grenade, character: Character): boolean | nil @Triggered when a Character interacts with this Pickable (i.e. tries to pick it up)
----@overload fun(self: Grenade, event_name: "PickUp", callback: fun(self: Grenade, character: Character)): fun(self: Grenade, character: Character) @Triggered When a Character picks this up
----@overload fun(self: Grenade, event_name: "PullUse", callback: fun(self: Grenade, character: Character)): fun(self: Grenade, character: Character) @Triggered when a Character presses the use button for this Pickable (i.e. clicks left mouse button with this equipped)
----@overload fun(self: Grenade, event_name: "ReleaseUse", callback: fun(self: Grenade, character: Character)): fun(self: Grenade, character: Character) @Triggered when a Character releases the use button for this Pickable (i.e. releases left mouse button with this equipped)
----@overload fun(self: Grenade, event_name: "Explode", callback: fun(self: Grenade)): fun(self: Grenade) @Triggered when the grenade has exploded
----@overload fun(self: Grenade, event_name: "Throw", callback: fun(self: Grenade, handler: Character)): fun(self: Grenade, handler: Character) @Triggered when the grenade has been thrown
-function Grenade:Subscribe(event_name, callback) end
-
----Unsubscribe from an event
----@param event_name string @Name of the event to unsubscribe from
----@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
----@overload fun(self: Grenade, event_name: "Spawn", callback: fun(self: Grenade)) @Triggered when an Entity is spawned/created
----@overload fun(self: Grenade, event_name: "Destroy", callback: fun(self: Grenade)) @Triggered when an Entity is destroyed
----@overload fun(self: Grenade, event_name: "ValueChange", callback: fun(self: Grenade, key: string, value: any)) @Triggered when an Entity has a value changed with <code>:SetValue()</code>
----@overload fun(self: Grenade, event_name: "ClassRegister", callback: fun(class: table)) @Triggered when a new Class is registered with the <a href='/docs/core-concepts/scripting/inheriting-classes'>Inheriting System</a>
----@overload fun(self: Grenade, event_name: "DimensionChange", callback: fun(self: Grenade, old_dimension: integer, new_dimension: integer)) @Triggered when an Actor changes it's dimension
----@overload fun(self: Grenade, event_name: "Drop", callback: fun(self: Grenade, character: Character, was_triggered_by_player: boolean)) @When a Character drops this Pickable
----@overload fun(self: Grenade, event_name: "Hit", callback: fun(self: Grenade, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector)) @When this Pickable hits something
----@overload fun(self: Grenade, event_name: "Interact", callback: fun(self: Grenade, character: Character): boolean | nil) @Triggered when a Character interacts with this Pickable (i.e. tries to pick it up)
----@overload fun(self: Grenade, event_name: "PickUp", callback: fun(self: Grenade, character: Character)) @Triggered When a Character picks this up
----@overload fun(self: Grenade, event_name: "PullUse", callback: fun(self: Grenade, character: Character)) @Triggered when a Character presses the use button for this Pickable (i.e. clicks left mouse button with this equipped)
----@overload fun(self: Grenade, event_name: "ReleaseUse", callback: fun(self: Grenade, character: Character)) @Triggered when a Character releases the use button for this Pickable (i.e. releases left mouse button with this equipped)
----@overload fun(self: Grenade, event_name: "Explode", callback: fun(self: Grenade)) @Triggered when the grenade has exploded
----@overload fun(self: Grenade, event_name: "Throw", callback: fun(self: Grenade, handler: Character)) @Triggered when the grenade has been thrown
-function Grenade:Unsubscribe(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----<b>Pickables</b> are special Actors which can be <b>grabbed</b>, <b>held</b> and <b>used</b> by Characters.
----@class Pickable
-Pickable = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Spawns and attaches a SkeletalMesh to this Pickable, the SkeletalMesh must have the same skeleton used by this Actor's mesh, and will follow all animations from it. Uses a custom ID to be used for removing/customizing it afterwards
----@param id string @Used further for removing or applying material settings on it
----@param skeletal_mesh_path string @Path to SkeletalMesh asset to attach
----@param use_parent_bounds boolean | nil @If true, this component uses its parents bounds when attached. This can be a significant optimization with many components attached together (Default: true)
-function Pickable:AddSkeletalMeshAttached(id, skeletal_mesh_path, use_parent_bounds) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Spawns and attaches a StaticMesh to this Pickable in a Socket with a relative location and rotation. Uses a custom ID to be used for removing/customizing it afterwards
----@param id string @Unique ID to assign to the StaticMesh
----@param static_mesh_path string @Path to StaticMesh asset to attach
----@param socket string | nil @Bone socket to attach to (Default: "")
----@param relative_location Vector | nil @Relative location (Default: Vector(0, 0, 0))
----@param relative_rotation Rotator | nil @Relative rotation (Default: Rotator(0, 0, 0))
----@param use_parent_bounds boolean | nil @If true, this component uses its parents bounds when attached. This can be a significant optimization with many components attached together (Default: true)
-function Pickable:AddStaticMeshAttached(id, static_mesh_path, socket, relative_location, relative_rotation, use_parent_bounds) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets all Static Meshes attached to this entity
----@return string[] @the key as the Attached ID, and the value as the Asset Path
-function Pickable:GetAllStaticMeshAttached() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets all Skeletal Meshes attached to this entity
----@return string[] @the key as the Attached ID, and the value as the Asset Path
-function Pickable:GetAllSkeletalMeshAttached() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Removes, if it exists, a SkeletalMesh from this Pickable given its custom ID
----@param id string @Unique ID of the SkeletalMesh to remove
-function Pickable:RemoveSkeletalMeshAttached(id) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets a Static Mesh Attached location and rotation
----@param id string @Unique ID of the StaticMesh set with AddStaticMeshAttached
----@param relative_location Vector @New relative location
----@param relative_rotation Rotator @New relative rotation
-function Pickable:SetStaticMeshAttachedTransform(id, relative_location, relative_rotation) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Removes, if it exists, a StaticMesh from this Pickable given its custom ID
----@param id string @Unique ID of the StaticMesh to remove
-function Pickable:RemoveStaticMeshAttached(id) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Removes all StaticMeshes attached
-function Pickable:RemoveAllStaticMeshesAttached() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Removes all SkeletalMeshes attached
-function Pickable:RemoveAllSkeletalMeshesAttached() end
+---Execute a select query asynchronously
+---@param query string @Query to execute
+---@param callback function | nil @Callback (Default: nil)
+---@param ... any | nil @Sequence of parameters to escape into the Query (Default: nil)
+function Database:SelectAsync(query, callback, ...) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
----Pulls the usage of this Pickable (will start firing if this is a weapon)
----@param release_use_after number | nil @Time in seconds to automatically release the usage (-1 will not release, 0 will release one tick after) (Default: -1)
-function Pickable:PullUse(release_use_after) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Releases the usage of this Pickable (will stop firing if this is a weapon)
-function Pickable:ReleaseUse() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sets the Attachment Settings for this Pickable (how it attaches to the Character when Picking up)
----@param relative_location Vector @Location relative to the Socket
----@param relative_rotation Rotator | nil @Rotation relative to the Socket (Default: Rotator(0, 0, 0))
----@param socket string | nil @Character Socket to attach to when picked up (Default: hand_r_socket)
-function Pickable:SetAttachmentSettings(relative_location, relative_rotation, socket) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sets the crosshair material for this Pickable
----@param material_asset string @Asset path to the crosshair material
-function Pickable:SetCrosshairMaterial(material_asset) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sets if this Pickable can be picked up from ground by the player
----@param is_pickable boolean 
-function Pickable:SetPickable(is_pickable) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets the name of the asset this Pickable uses
----@return string 
-function Pickable:GetMesh() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets the Character, if it exists, that's holding this Pickable
----@return Character | nil 
-function Pickable:GetHandler() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets the Handling Mode of this Pickable
----@return HandlingMode 
-function Pickable:GetHandlingMode() end
-
----Subscribe to an event
----@param event_name string @Name of the event to subscribe to
----@param callback function @Function to call when the event is triggered
----@return function @The callback function passed
----@overload fun(self: Pickable, event_name: "Drop", callback: fun(self: Pickable, character: Character, was_triggered_by_player: boolean)): fun(self: Pickable, character: Character, was_triggered_by_player: boolean) @When a Character drops this Pickable
----@overload fun(self: Pickable, event_name: "Hit", callback: fun(self: Pickable, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector)): fun(self: Pickable, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector) @When this Pickable hits something
----@overload fun(self: Pickable, event_name: "Interact", callback: fun(self: Pickable, character: Character): boolean | nil): fun(self: Pickable, character: Character): boolean | nil @Triggered when a Character interacts with this Pickable (i.e. tries to pick it up)
----@overload fun(self: Pickable, event_name: "PickUp", callback: fun(self: Pickable, character: Character)): fun(self: Pickable, character: Character) @Triggered When a Character picks this up
----@overload fun(self: Pickable, event_name: "PullUse", callback: fun(self: Pickable, character: Character)): fun(self: Pickable, character: Character) @Triggered when a Character presses the use button for this Pickable (i.e. clicks left mouse button with this equipped)
----@overload fun(self: Pickable, event_name: "ReleaseUse", callback: fun(self: Pickable, character: Character)): fun(self: Pickable, character: Character) @Triggered when a Character releases the use button for this Pickable (i.e. releases left mouse button with this equipped)
-function Pickable:Subscribe(event_name, callback) end
-
----Unsubscribe from an event
----@param event_name string @Name of the event to unsubscribe from
----@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
----@overload fun(self: Pickable, event_name: "Drop", callback: fun(self: Pickable, character: Character, was_triggered_by_player: boolean)) @When a Character drops this Pickable
----@overload fun(self: Pickable, event_name: "Hit", callback: fun(self: Pickable, impact_force: number, normal_impulse: Vector, impact_location: Vector, velocity: Vector)) @When this Pickable hits something
----@overload fun(self: Pickable, event_name: "Interact", callback: fun(self: Pickable, character: Character): boolean | nil) @Triggered when a Character interacts with this Pickable (i.e. tries to pick it up)
----@overload fun(self: Pickable, event_name: "PickUp", callback: fun(self: Pickable, character: Character)) @Triggered When a Character picks this up
----@overload fun(self: Pickable, event_name: "PullUse", callback: fun(self: Pickable, character: Character)) @Triggered when a Character presses the use button for this Pickable (i.e. clicks left mouse button with this equipped)
----@overload fun(self: Pickable, event_name: "ReleaseUse", callback: fun(self: Pickable, character: Character)) @Triggered when a Character releases the use button for this Pickable (i.e. releases left mouse button with this equipped)
-function Pickable:Unsubscribe(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----A Cable represents a Physics Constraint which joins two Actors with a rope-like visual representation between them.
----@class Cable : Entity, Actor, Paintable
----@overload fun(location: Vector, enable_visuals: boolean | nil): Cable
-Cable = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Attached the beginning of this cable to another Actor at a specific bone or relative location
----@param other Actor 
----@param relative_location Vector | nil @(Default: Vector(0, 0, 0))
----@param bone_name string | nil @(Default: "")
-function Cable:AttachStartTo(other, relative_location, bone_name) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Attached the end of this cable to another Actor at a specific bone or relative location
----@param other Actor 
----@param relative_location Vector | nil @(Default: Vector(0, 0, 0))
----@param bone_name string | nil @(Default: "")
-function Cable:AttachEndTo(other, relative_location, bone_name) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Detaches the End of this Cable
-function Cable:DetachEnd() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Detaches the Start of this Cable
-function Cable:DetachStart() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Set the overall settings for this cable (visuals only)
----@param length number @Rest length of the cable. Default is 100
----@param num_segments integer @How many segments the cable has. Default is 10
----@param solver_iterations integer @The number of solver iterations controls how 'stiff' the cable is. Default is 0
-function Cable:SetCableSettings(length, num_segments, solver_iterations) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Set the forces the cable has applied (visuals only)
----@param force Vector @Force vector (world space) applied to all particles in cable. Default is Vector(0, 0, 0)
----@param gravity_scale number | nil @Scaling applied to world gravity affecting this cable. Default is 1 (Default: 1)
-function Cable:SetForces(force, gravity_scale) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sets the Physics Angular Limits of this cable
----@param swing_1_motion ConstraintMotion @Indicates whether the Swing1 limit is used
----@param swing_2_motion ConstraintMotion @Indicates whether the Swing2 limit is used
----@param twist_motion ConstraintMotion @Indicates whether the Twist limit is used
----@param swing_1_limit number | nil @Angle of movement along the XY plane. This defines the first symmetric angle of the cone (Default: 0)
----@param swing_2_limit number | nil @Angle of movement along the XZ plane. This defines the second symmetric angle of the cone (Default: 0)
----@param twist_limit number | nil @Symmetric angle of roll along the X-axis (Default: 0)
-function Cable:SetAngularLimits(swing_1_motion, swing_2_motion, twist_motion, swing_1_limit, swing_2_limit, twist_limit) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sets the Physics Linear Limits of this cable. If use_soft_constraint is enabled, then stiffness and damping will be used, otherwise restitution will be used.
----@param x_motion ConstraintMotion @Indicates the linear constraint applied along the X-axis. Free implies no constraint at all. Locked implies no movement along X is allowed. Limited implies the distance in the joint along all active axes must be less than the Distance provided
----@param y_motion ConstraintMotion @Indicates the linear constraint applied along the Y-axis. Free implies no constraint at all. Locked implies no movement along Y is allowed. Limited implies the distance in the joint along all active axes must be less than the Distance provided
----@param z_motion ConstraintMotion @Indicates the linear constraint applied along theZX-axis. Free implies no constraint at all. Locked implies no movement along Z is allowed. Limited implies the distance in the joint along all active axes must be less than the Distance provided
----@param limit number | nil @The distance allowed between between the two joint reference frames. Distance applies on all axes enabled (one axis means line, two axes implies circle, three axes implies sphere) (Default: 0)
----@param restitution number | nil @Controls the amount of bounce when the constraint is violated. A restitution value of 1 will bounce back with the same velocity the limit was hit. A value of 0 will stop dead (Default: 0)
----@param use_soft_constraint boolean | nil @Whether we want to use a soft constraint (spring) (Default: false)
----@param stiffness number | nil @Stiffness of the soft constraint. Only used when Soft Constraint is on (Default: 0)
----@param damping number | nil @Damping of the soft constraint. Only used when Soft Constraint is on (Default: 0)
-function Cable:SetLinearLimits(x_motion, y_motion, z_motion, limit, restitution, use_soft_constraint, stiffness, damping) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Set the rendering settings of this cable (visuals only)
----@param width number @How wide the cable geometry is. Default is 6
----@param num_sides integer @Number of sides of the cable geometry. Default is 4
----@param tile_material integer @How many times to repeat the material along the length of the cable. Default is 1
-function Cable:SetRenderingSettings(width, num_sides, tile_material) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets the Actor attached to Start
----@return Actor @the Actor or nil
-function Cable:GetAttachedStartTo() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets the Actor attached to End
----@return Actor @the Actor or nil
-function Cable:GetAttachedEndTo() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Players are Entities that represents the individual behind the mouse and keyboard. Players are spawned automatically when connected to the server.
----@class Player : Entity
-Player = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Bans the player from the server
----@param reason string 
-function Player:Ban(reason) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Redirects the player to another server
----@param IP string 
----@param password string | nil @Server password (Default: "")
-function Player:Connect(IP, password) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Kicks the player from the server
----@param reason string 
-function Player:Kick(reason) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Makes a Player to possess and control a Pawn
----@param new_pawn Pawn 
----@param blend_time number | nil @(Default: 0)
----@param exp number | nil @(Default: 0)
-function Player:Possess(new_pawn, blend_time, exp) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Does a camera fade to/from a solid color. Animates automatically
----@param from_alpha number @Alpha at which to begin the fade. Range [0..1], where 0 is fully transparent and 1 is fully opaque solid color.
----@param to_alpha number @Alpha at which to finish the fade.
----@param duration number @How long the fade should take, in seconds.
----@param to_color Color @Color to fade to/from.
----@param should_fade_audio boolean | nil @True to fade audio volume along with the alpha of the solid color. (Default: false)
----@param hold_when_finished boolean | nil @True for fade to hold at the ToAlpha until explicitly stopped (e.g. with StopCameraFade) (Default: false)
-function Player:StartCameraFade(from_alpha, to_alpha, duration, to_color, should_fade_audio, hold_when_finished) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Turns on camera fading at the given opacity. Does not auto-animate, allowing user to animate themselves. Call StopCameraFade to turn fading back off.
----@param in_fade_amount number @Range [0..1], where 0 is fully transparent and 1 is fully opaque solid color.
----@param color Color 
----@param in_fade_audio boolean 
-function Player:SetManualCameraFade(in_fade_amount, color, in_fade_audio) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Stops camera fading.
-function Player:StopCameraFade() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Player's Camera Location (only works if not possessing any Character)
----@param location Vector 
-function Player:SetCameraLocation(location) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Player's Camera Rotation
----@param rotation Rotator 
-function Player:SetCameraRotation(rotation) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Smoothly moves the Player's Camera Location (only works if not possessing any Character)
----@param location Vector 
----@param time number 
----@param exp number | nil @Exponential used to smooth interp, use 0 for linear movement (Default: 0)
-function Player:TranslateCameraTo(location, time, exp) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Smoothly moves the Player's Camera Rotation
----@param rotation Rotator 
----@param time number 
----@param exp number | nil @Exponential used to smooth interp, use 0 for linear movement (Default: 0)
-function Player:RotateCameraTo(rotation, time, exp) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Player's Camera Socket Offset (Spring Arm Offset)
----@param socket_offset Vector 
-function Player:SetCameraSocketOffset(socket_offset) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Player's Camera Arm Length (Spring Arm length)
----@param length number 
----@param force boolean @Whether to bypass interpolation and set the target to its value directly
-function Player:SetCameraArmLength(length, force) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Player's Camera FOV (if not possessing a Character)
----@param fov number | nil @Value must be between 5 and 170. Pass empty to reset to default. (Default: 90)
-function Player:SetCameraFOV(fov) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the Player's Camera Speed Settings (if not possessing a Character)
----@param max_speed number | nil @Maximum velocity magnitude allowed (Default: 1200)
----@param acceleration number | nil @Acceleration applied by input (rate of change of velocity) (Default: 4000)
----@param deceleration number | nil @Deceleration applied when there is no input (rate of change of velocity) (Default: 4000)
----@param turning_boost number | nil @Setting affecting extra force applied when changing direction, making turns have less drift and become more responsive. Velocity magnitude is not allowed to increase, that only happens due to normal acceleration. It may decrease with large direction changes. Larger values apply extra force to reach the target direction more quickly, while a zero value disables any extra turn force. (Default: 8)
-function Player:SetCameraSpeedSettings(max_speed, acceleration, deceleration, turning_boost) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Attaches the Player`s Camera to an Actor
----@param actor Actor 
----@param socket_offset Vector 
----@param blend_speed number 
-function Player:AttachCameraTo(actor, socket_offset, blend_speed) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Resets the Camera to default state (Unspectate and Detaches)
-function Player:ResetCamera() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Spectates other Player
----@param player Player 
----@param blend_speed number | nil @(Default: 0)
-function Player:Spectate(player, blend_speed) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sets the player's name
----@param player_name string 
-function Player:SetName(player_name) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sets the VOIP Channel of this Player (will only communicate with other players in the same channel)
----@param channel integer 
-function Player:SetVOIPChannel(channel) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the VOIP Settings of this Player
----@param voip_setting VOIPSetting 
-function Player:SetVOIPSetting(voip_setting) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the VOIP Volume of this Player
----@param volume number 
-function Player:SetVOIPVolume(volume) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Release the Player from the Character
-function Player:UnPossess() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----
----@return string 
-function Player:GetSteamID() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----
----@return string 
-function Player:GetAccountID() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----
----@return string 
-function Player:GetAccountName() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Return a URL which can be used through WebUI and Widgets to display the Player's Steam Avatar (64x64)
----@return string 
-function Player:GetAccountIconURL() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----
----@return Vector 
-function Player:GetCameraLocation() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----
----@param return_base boolean | nil @Whether to return the current (false) or base (true) value. The base is the same value set by SetCameraArmLength(). (Default: false)
----@return number 
-function Player:GetCameraArmLength(return_base) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----
----@return Rotator 
-function Player:GetCameraRotation() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----
----@return Character | nil 
-function Player:GetControlledCharacter() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----
----@return string 
-function Player:GetIP() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets this Player's dimension
----@return integer 
-function Player:GetDimension() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sets this Player's dimension
----@param dimension integer 
-function Player:SetDimension(dimension) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----
----@return string 
-function Player:GetName() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----
----@return integer 
-function Player:GetPing() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----
----@return integer 
-function Player:GetVOIPChannel() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----
----@return boolean 
-function Player:IsHost() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----
----@return boolean 
-function Player:IsLocalPlayer() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----
----@return VOIPSetting 
-function Player:GetVOIPSetting() end
-
----Subscribe to an event
----@param event_name string @Name of the event to subscribe to
----@param callback function @Function to call when the event is triggered
----@return function @The callback function passed
----@overload fun(self: Player, event_name: "Spawn", callback: fun(self: Player)): fun(self: Player) @Triggered when an Entity is spawned/created
----@overload fun(self: Player, event_name: "Destroy", callback: fun(self: Player)): fun(self: Player) @Triggered when an Entity is destroyed
----@overload fun(self: Player, event_name: "ValueChange", callback: fun(self: Player, key: string, value: any)): fun(self: Player, key: string, value: any) @Triggered when an Entity has a value changed with <code>:SetValue()</code>
----@overload fun(self: Player, event_name: "ClassRegister", callback: fun(class: table)): fun(class: table) @Triggered when a new Class is registered with the <a href='/docs/core-concepts/scripting/inheriting-classes'>Inheriting System</a>
----@overload fun(self: Player, event_name: "DimensionChange", callback: fun(self: Player, old_dimension: integer, new_dimension: integer)): fun(self: Player, old_dimension: integer, new_dimension: integer) @Triggered when a Player changes it's dimension
----@overload fun(self: Player, event_name: "Possess", callback: fun(self: Player, character: Character)): fun(self: Player, character: Character) @Trigerred when Player starts controlling a Character
----@overload fun(self: Player, event_name: "Ready", callback: fun(self: Player)): fun(self: Player) @Triggered when Player is ready (the client fully joined, loaded the map and all entities and is ready to play)
----@overload fun(self: Player, event_name: "UnPossess", callback: fun(self: Player, character: Character)): fun(self: Player, character: Character) @A Character was released from the Player
----@overload fun(self: Player, event_name: "VOIP", callback: fun(self: Player, is_talking: boolean): boolean | nil): fun(self: Player, is_talking: boolean): boolean | nil @When a Player starts/ends using VOIP
-function Player:Subscribe(event_name, callback) end
-
----Unsubscribe from an event
----@param event_name string @Name of the event to unsubscribe from
----@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
----@overload fun(self: Player, event_name: "Spawn", callback: fun(self: Player)) @Triggered when an Entity is spawned/created
----@overload fun(self: Player, event_name: "Destroy", callback: fun(self: Player)) @Triggered when an Entity is destroyed
----@overload fun(self: Player, event_name: "ValueChange", callback: fun(self: Player, key: string, value: any)) @Triggered when an Entity has a value changed with <code>:SetValue()</code>
----@overload fun(self: Player, event_name: "ClassRegister", callback: fun(class: table)) @Triggered when a new Class is registered with the <a href='/docs/core-concepts/scripting/inheriting-classes'>Inheriting System</a>
----@overload fun(self: Player, event_name: "DimensionChange", callback: fun(self: Player, old_dimension: integer, new_dimension: integer)) @Triggered when a Player changes it's dimension
----@overload fun(self: Player, event_name: "Possess", callback: fun(self: Player, character: Character)) @Trigerred when Player starts controlling a Character
----@overload fun(self: Player, event_name: "Ready", callback: fun(self: Player)) @Triggered when Player is ready (the client fully joined, loaded the map and all entities and is ready to play)
----@overload fun(self: Player, event_name: "UnPossess", callback: fun(self: Player, character: Character)) @A Character was released from the Player
----@overload fun(self: Player, event_name: "VOIP", callback: fun(self: Player, is_talking: boolean): boolean | nil) @When a Player starts/ends using VOIP
-function Player:Unsubscribe(event_name, callback) end
+---Selects a query synchronously
+---@param query string @Query to execute
+---@param ... any | nil @Sequence of parameters to escape into the Query (Default: nil)
+---@return table[] @rows fetched
+---@return string @error (if any)
+function Database:Select(query, ...) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
@@ -3011,6 +2717,300 @@ function Vehicle:Subscribe(event_name, callback) end
 ---@overload fun(self: Vehicle, event_name: "CharacterAttemptLeave", callback: fun(self: Vehicle, character: Character): boolean | nil) @Triggered when a Character attempts to leave the Vehicle
 ---@overload fun(self: Vehicle, event_name: "TakeDamage", callback: fun(self: Vehicle, damage: integer, bone: string, type: DamageType, from_direction: Vector, instigator: Player, causer: any): boolean | nil) @Triggered when this Vehicle takes damage
 function Vehicle:Unsubscribe(event_name, callback) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Players are Entities that represents the individual behind the mouse and keyboard. Players are spawned automatically when connected to the server.
+---@class Player : Entity
+Player = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Bans the player from the server
+---@param reason string 
+function Player:Ban(reason) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Redirects the player to another server
+---@param IP string 
+---@param password string | nil @Server password (Default: "")
+function Player:Connect(IP, password) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Kicks the player from the server
+---@param reason string 
+function Player:Kick(reason) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Makes a Player to possess and control a Pawn
+---@param new_pawn Pawn 
+---@param blend_time number | nil @(Default: 0)
+---@param exp number | nil @(Default: 0)
+function Player:Possess(new_pawn, blend_time, exp) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Does a camera fade to/from a solid color. Animates automatically
+---@param from_alpha number @Alpha at which to begin the fade. Range [0..1], where 0 is fully transparent and 1 is fully opaque solid color.
+---@param to_alpha number @Alpha at which to finish the fade.
+---@param duration number @How long the fade should take, in seconds.
+---@param to_color Color @Color to fade to/from.
+---@param should_fade_audio boolean | nil @True to fade audio volume along with the alpha of the solid color. (Default: false)
+---@param hold_when_finished boolean | nil @True for fade to hold at the ToAlpha until explicitly stopped (e.g. with StopCameraFade) (Default: false)
+function Player:StartCameraFade(from_alpha, to_alpha, duration, to_color, should_fade_audio, hold_when_finished) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Turns on camera fading at the given opacity. Does not auto-animate, allowing user to animate themselves. Call StopCameraFade to turn fading back off.
+---@param in_fade_amount number @Range [0..1], where 0 is fully transparent and 1 is fully opaque solid color.
+---@param color Color 
+---@param in_fade_audio boolean 
+function Player:SetManualCameraFade(in_fade_amount, color, in_fade_audio) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Stops camera fading.
+function Player:StopCameraFade() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Player's Camera Location (only works if not possessing any Character)
+---@param location Vector 
+function Player:SetCameraLocation(location) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Player's Camera Rotation
+---@param rotation Rotator 
+function Player:SetCameraRotation(rotation) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Smoothly moves the Player's Camera Location (only works if not possessing any Character)
+---@param location Vector 
+---@param time number 
+---@param exp number | nil @Exponential used to smooth interp, use 0 for linear movement (Default: 0)
+function Player:TranslateCameraTo(location, time, exp) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Smoothly moves the Player's Camera Rotation
+---@param rotation Rotator 
+---@param time number 
+---@param exp number | nil @Exponential used to smooth interp, use 0 for linear movement (Default: 0)
+function Player:RotateCameraTo(rotation, time, exp) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Player's Camera Socket Offset (Spring Arm Offset)
+---@param socket_offset Vector 
+function Player:SetCameraSocketOffset(socket_offset) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Player's Camera Arm Length (Spring Arm length)
+---@param length number 
+---@param force boolean @Whether to bypass interpolation and set the target to its value directly
+function Player:SetCameraArmLength(length, force) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Player's Camera FOV (if not possessing a Character)
+---@param fov number | nil @Value must be between 5 and 170. Pass empty to reset to default. (Default: 90)
+function Player:SetCameraFOV(fov) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the Player's Camera Speed Settings (if not possessing a Character)
+---@param max_speed number | nil @Maximum velocity magnitude allowed (Default: 1200)
+---@param acceleration number | nil @Acceleration applied by input (rate of change of velocity) (Default: 4000)
+---@param deceleration number | nil @Deceleration applied when there is no input (rate of change of velocity) (Default: 4000)
+---@param turning_boost number | nil @Setting affecting extra force applied when changing direction, making turns have less drift and become more responsive. Velocity magnitude is not allowed to increase, that only happens due to normal acceleration. It may decrease with large direction changes. Larger values apply extra force to reach the target direction more quickly, while a zero value disables any extra turn force. (Default: 8)
+function Player:SetCameraSpeedSettings(max_speed, acceleration, deceleration, turning_boost) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Attaches the Player`s Camera to an Actor
+---@param actor Actor 
+---@param socket_offset Vector 
+---@param blend_speed number 
+function Player:AttachCameraTo(actor, socket_offset, blend_speed) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Resets the Camera to default state (Unspectate and Detaches)
+function Player:ResetCamera() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Spectates other Player
+---@param player Player 
+---@param blend_speed number | nil @(Default: 0)
+function Player:Spectate(player, blend_speed) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the player's name
+---@param player_name string 
+function Player:SetName(player_name) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets the VOIP Channel of this Player (will only communicate with other players in the same channel)
+---@param channel integer 
+function Player:SetVOIPChannel(channel) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the VOIP Settings of this Player
+---@param voip_setting VOIPSetting 
+function Player:SetVOIPSetting(voip_setting) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the VOIP Volume of this Player
+---@param volume number 
+function Player:SetVOIPVolume(volume) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Release the Player from the Character
+function Player:UnPossess() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---
+---@return string 
+function Player:GetSteamID() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---
+---@return string 
+function Player:GetAccountID() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---
+---@return string 
+function Player:GetAccountName() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Return a URL which can be used through WebUI and Widgets to display the Player's Steam Avatar (64x64)
+---@return string 
+function Player:GetAccountIconURL() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---
+---@return Vector 
+function Player:GetCameraLocation() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---
+---@param return_base boolean | nil @Whether to return the current (false) or base (true) value. The base is the same value set by SetCameraArmLength(). (Default: false)
+---@return number 
+function Player:GetCameraArmLength(return_base) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---
+---@return Rotator 
+function Player:GetCameraRotation() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---
+---@return Character | nil 
+function Player:GetControlledCharacter() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---
+---@return string 
+function Player:GetIP() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets this Player's dimension
+---@return integer 
+function Player:GetDimension() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sets this Player's dimension
+---@param dimension integer 
+function Player:SetDimension(dimension) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---
+---@return string 
+function Player:GetName() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---
+---@return integer 
+function Player:GetPing() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---
+---@return integer 
+function Player:GetVOIPChannel() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---
+---@return boolean 
+function Player:IsHost() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---
+---@return boolean 
+function Player:IsLocalPlayer() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---
+---@return VOIPSetting 
+function Player:GetVOIPSetting() end
+
+---Subscribe to an event
+---@param event_name string @Name of the event to subscribe to
+---@param callback function @Function to call when the event is triggered
+---@return function @The callback function passed
+---@overload fun(self: Player, event_name: "Spawn", callback: fun(self: Player)): fun(self: Player) @Triggered when an Entity is spawned/created
+---@overload fun(self: Player, event_name: "Destroy", callback: fun(self: Player)): fun(self: Player) @Triggered when an Entity is destroyed
+---@overload fun(self: Player, event_name: "ValueChange", callback: fun(self: Player, key: string, value: any)): fun(self: Player, key: string, value: any) @Triggered when an Entity has a value changed with <code>:SetValue()</code>
+---@overload fun(self: Player, event_name: "ClassRegister", callback: fun(class: table)): fun(class: table) @Triggered when a new Class is registered with the <a href='/docs/core-concepts/scripting/inheriting-classes'>Inheriting System</a>
+---@overload fun(self: Player, event_name: "DimensionChange", callback: fun(self: Player, old_dimension: integer, new_dimension: integer)): fun(self: Player, old_dimension: integer, new_dimension: integer) @Triggered when a Player changes it's dimension
+---@overload fun(self: Player, event_name: "Possess", callback: fun(self: Player, character: Character)): fun(self: Player, character: Character) @Trigerred when Player starts controlling a Character
+---@overload fun(self: Player, event_name: "Ready", callback: fun(self: Player)): fun(self: Player) @Triggered when Player is ready (the client fully joined, loaded the map and all entities and is ready to play)
+---@overload fun(self: Player, event_name: "UnPossess", callback: fun(self: Player, character: Character)): fun(self: Player, character: Character) @A Character was released from the Player
+---@overload fun(self: Player, event_name: "VOIP", callback: fun(self: Player, is_talking: boolean): boolean | nil): fun(self: Player, is_talking: boolean): boolean | nil @When a Player starts/ends using VOIP
+function Player:Subscribe(event_name, callback) end
+
+---Unsubscribe from an event
+---@param event_name string @Name of the event to unsubscribe from
+---@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
+---@overload fun(self: Player, event_name: "Spawn", callback: fun(self: Player)) @Triggered when an Entity is spawned/created
+---@overload fun(self: Player, event_name: "Destroy", callback: fun(self: Player)) @Triggered when an Entity is destroyed
+---@overload fun(self: Player, event_name: "ValueChange", callback: fun(self: Player, key: string, value: any)) @Triggered when an Entity has a value changed with <code>:SetValue()</code>
+---@overload fun(self: Player, event_name: "ClassRegister", callback: fun(class: table)) @Triggered when a new Class is registered with the <a href='/docs/core-concepts/scripting/inheriting-classes'>Inheriting System</a>
+---@overload fun(self: Player, event_name: "DimensionChange", callback: fun(self: Player, old_dimension: integer, new_dimension: integer)) @Triggered when a Player changes it's dimension
+---@overload fun(self: Player, event_name: "Possess", callback: fun(self: Player, character: Character)) @Trigerred when Player starts controlling a Character
+---@overload fun(self: Player, event_name: "Ready", callback: fun(self: Player)) @Triggered when Player is ready (the client fully joined, loaded the map and all entities and is ready to play)
+---@overload fun(self: Player, event_name: "UnPossess", callback: fun(self: Player, character: Character)) @A Character was released from the Player
+---@overload fun(self: Player, event_name: "VOIP", callback: fun(self: Player, is_talking: boolean): boolean | nil) @When a Player starts/ends using VOIP
+function Player:Unsubscribe(event_name, callback) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
@@ -4631,27 +4631,523 @@ function Character:Subscribe(event_name, callback) end
 ---@overload fun(self: Character, event_name: "ReleaseUse", callback: fun(self: Character, pickable: Pickable)) @Triggered when a Character releases the use button for a Pickable (i.e. releases left mouse button with this equipped)
 function Character:Unsubscribe(event_name, callback) end
 
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
 ---
----Initialize and set Discord activity.
----@class Discord
-Discord = {}
+---Subscribe for user-defined Events.
+---@class Events
+Events = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Calls an Event which will be triggered in all Local Packages
+---@param event_name string @The Event Name to trigger the event
+---@param ... any | nil @Arguments to pass to the event (Default: nil)
+function Events.Call(event_name, ...) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
----Initializes the Discord Integration with your custom client_id
----@param client_id integer 
-function Discord.Initialize(client_id) end
+---Calls an Event if on Client which will be triggered in all Server Packages
+---@param event_name string @The Event Name to trigger the event
+---@param ... any | nil @Arguments to pass to the event (Default: nil)
+function Events.CallRemote(event_name, ...) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Calls an Event if on Server which will be triggered in all Client's Packages of a specific Player
+---@param event_name string @The Event Name to trigger the event
+---@param player Player @The remote player to send this event
+---@param ... any | nil @Arguments to pass to the event (Default: nil)
+function Events.CallRemote(event_name, player, ...) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Calls an Event on Server which will be triggered in all Client's Packages of all Players
+---@param event_name string @The Event Name to trigger the event
+---@param ... any | nil @Arguments to pass to the event (Default: nil)
+function Events.BroadcastRemote(event_name, ...) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Calls an Event on Server which will be triggered in all Client's Packages of all Players in that dimension
+---@param dimension integer @The Dimension to send this event
+---@param event_name string @The Event Name to trigger the event
+---@param ... any | nil @Arguments to pass to the event (Default: nil)
+function Events.BroadcastRemoteDimension(dimension, event_name, ...) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Subscribes for an user-created event which will be triggered for only local called events
+---@param event_name string @The Event Name to subscribe
+---@param callback function @The callback function to execute
+---@return function @the subscribed callback itself
+function Events.Subscribe(event_name, callback) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Subscribes for an user-created event which will be triggered for only remote called events
+---@param event_name string @The Event Name to subscribe
+---@param callback function @The callback function to execute
+---@return function @the subscribed callback itself
+function Events.SubscribeRemote(event_name, callback) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Unsubscribes from all subscribed events in this Package with that event name, optionally passing the function to unsubscribe only that callback
+---@param event_name string @The Event Name to unsubscribe
+---@param callback function | nil @The callback function to unsubscribe (Default: nil)
+function Events.Unsubscribe(event_name, callback) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Unsubscribes from all subscribed remote events in this Package with that event name, optionally passing the function to unsubscribe only that callback
+---@param event_name string @The Event Name to unsubscribe
+---@param callback function | nil @The callback function to unsubscribe (Default: nil)
+function Events.UnsubscribeRemote(event_name, callback) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Exposes access to registering Console Commands and Logging messages.
+---@class Console
+Console = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Logs and formats a message in the console, with formatted arguments
+---@param message string @Message to print
+---@param ... any | nil @Other arguments to format with the message using string.format (Default: nil)
+function Console.Log(message, ...) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Logs an orange warning in the console, with formatted arguments
+---@param message string @Message to print
+---@param ... any | nil @Other arguments to format with the message using string.format (Default: nil)
+function Console.Warn(message, ...) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Logs a red error in the console, with formatted arguments
+---@param message string @Message to print
+---@param ... any | nil @Other arguments to format with the message using string.format (Default: nil)
+function Console.Error(message, ...) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Registers a new Console Command
+---@param command string @The command
+---@param callback function @The callback to be called when the command is inputted
+---@param description string @The command description to display in the console
+---@param parameters string[] @The list of supported parameters to display in the console
+function Console.RegisterCommand(command, callback, description, parameters) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Runs a Console Command programmatically
+---@param command string @The command
+function Console.RunCommand(command) end
+
+---Subscribe to an event
+---@param event_name string @Name of the event to subscribe to
+---@param callback function @Function to call when the event is triggered
+---@return function @The callback function passed
+---@overload fun(event_name: "PlayerSubmit", callback: fun(text: string)): fun(text: string) @Called when a console command is submitted
+---@overload fun(event_name: "LogEntry", callback: fun(text: string, type: LogType)): fun(text: string, type: LogType) @Called when a log is received
+---@overload fun(event_name: "Open", callback: fun()): fun() @When player opens the Console
+---@overload fun(event_name: "Close", callback: fun()): fun() @When player closes the Console
+function Console.Subscribe(event_name, callback) end
+
+---Unsubscribe from an event
+---@param event_name string @Name of the event to unsubscribe from
+---@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
+---@overload fun(event_name: "PlayerSubmit", callback: fun(text: string)) @Called when a console command is submitted
+---@overload fun(event_name: "LogEntry", callback: fun(text: string, type: LogType)) @Called when a log is received
+---@overload fun(event_name: "Open", callback: fun()) @When player opens the Console
+---@overload fun(event_name: "Close", callback: fun()) @When player closes the Console
+function Console.Unsubscribe(event_name, callback) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---HTTP Requests Interface.
+---@class HTTP
+HTTP = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Makes an asynchronous HTTP Request.<br/><br/>The request will be made asynchronously and returned safetly in the same thread in the callback provided when it's done.<br/><br/><b>Note:</b> If a request is still running when unloading packages, the server will freeze until it's finished, then the package will unload.
+---@param uri string @The main URI (the base address)
+---@param endpoint string | nil @The endpoint (Default: "")
+---@param method HTTPMethod | nil @The HTTP Method to be used (Default: HTTPMethod.GET)
+---@param data string | nil @Payload (Default: "")
+---@param content_type string | nil @The <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types'>Content Type</a> to be used (Default: application/json)
+---@param compress boolean | nil @Whether or not to compress the content with gzip (Default: false)
+---@param headers table | nil @The <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers'>Headers</a> to be used (Default: {})
+---@param callback function | nil @The result (Default: nil)
+function HTTP.RequestAsync(uri, endpoint, method, data, content_type, compress, headers, callback) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Makes a synchronous HTTP Request.<br/><br/>The request will be made synchronously and will freeze the server until it's done.
+---@param uri string @The main URI (the base address)
+---@param endpoint string | nil @The endpoint (Default: "")
+---@param method HTTPMethod | nil @The HTTP Method to be used (Default: HTTPMethod.GET)
+---@param data string | nil @Payload (Default: "")
+---@param content_type string | nil @The <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types'>Content Type</a> to be used (Default: application/json)
+---@param compress boolean | nil @Whether or not to compress the content with gzip (Default: false)
+---@param headers table | nil @The <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers'>Headers</a> to be used (Default: {})
+---@return { Status: integer, Data: string } 
+function HTTP.Request(uri, endpoint, method, data, content_type, compress, headers) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the global Connection Timeout in seconds
+---@param connection_timeout integer @The timeout in seconds
+function HTTP.SetConnectionTimeout(connection_timeout) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets the global Read and Write Timeout in seconds
+---@param read_write_timeout integer @The timeout in seconds
+function HTTP.SetReadWriteTimeout(read_write_timeout) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Configure, send and intercept chat messages.
+---@class Chat
+Chat = {}
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
----Communicates with Discord and sets a custom user status
----@param state string 
----@param details string 
----@param large_image string 
----@param large_text string 
----@param reset_time string | nil @Whether or not to reset current activity elapsed time (Default: false)
-function Discord.SetActivity(state, details, large_image, large_text, reset_time) end
+---Adds a chat message which will display local only
+---@param message string 
+function Chat.AddMessage(message) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sends a chat message to a Player only
+---@param player Player @The player to receive the message
+---@param message string @The message
+function Chat.SendMessage(player, message) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Configures the Chat visuals and position
+---@param screen_location Vector2D | nil @(Default: Vector2D(-25, 0))
+---@param size Vector2D | nil @(Default: Vector2D(600, 250))
+---@param anchors_min Vector2D | nil @(Default: Vector2D(1, 0.5))
+---@param anchors_max Vector2D | nil @(Default: Vector2D(1, 0.5))
+---@param alignment Vector2D | nil @(Default: Vector2D(1, 0.5))
+---@param justify boolean | nil @(Default: true)
+---@param show_scrollbar boolean | nil @(Default: true)
+function Chat.SetConfiguration(screen_location, size, anchors_min, anchors_max, alignment, justify, show_scrollbar) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Sets if the Chat is visible or not
+---@param is_visible boolean 
+function Chat.SetVisibility(is_visible) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Clears all messages
+function Chat.Clear() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
+---
+---Sends a chat message to all Players
+---@param message string @The message to send to all Players
+function Chat.BroadcastMessage(message) end
+
+---Subscribe to an event
+---@param event_name string @Name of the event to subscribe to
+---@param callback function @Function to call when the event is triggered
+---@return function @The callback function passed
+---@overload fun(event_name: "PlayerSubmit", callback: fun(message: string, player: Player): boolean | nil): fun(message: string, player: Player): boolean | nil @Called when a player submits a message in the chat
+---@overload fun(event_name: "ChatEntry", callback: fun(message: string, player: Player | nil)): fun(message: string, player: Player | nil) @Called when a new Chat Message is received, this is also triggered when new messages are sent programatically<br/><br/>This is useful for creating your own Chat interface while still use the built-in system
+---@overload fun(event_name: "Open", callback: fun()): fun() @When player opens the Chat
+---@overload fun(event_name: "Close", callback: fun()): fun() @When player closes the Chat
+function Chat.Subscribe(event_name, callback) end
+
+---Unsubscribe from an event
+---@param event_name string @Name of the event to unsubscribe from
+---@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
+---@overload fun(event_name: "PlayerSubmit", callback: fun(message: string, player: Player): boolean | nil) @Called when a player submits a message in the chat
+---@overload fun(event_name: "ChatEntry", callback: fun(message: string, player: Player | nil)) @Called when a new Chat Message is received, this is also triggered when new messages are sent programatically<br/><br/>This is useful for creating your own Chat interface while still use the built-in system
+---@overload fun(event_name: "Open", callback: fun()) @When player opens the Chat
+---@overload fun(event_name: "Close", callback: fun()) @When player closes the Chat
+function Chat.Unsubscribe(event_name, callback) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Interaction with Post Process effects.
+---@class PostProcess
+PostProcess = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Set Post Process Bloom Settings
+---@param intensity number | nil @(Default: 0.675)
+---@param threshold number | nil @(Default: -1)
+function PostProcess.SetBloom(intensity, threshold) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Set Post Process Chromatic Abberation Settings
+---@param intensity number | nil @(Default: 0)
+---@param start_offset number | nil @(Default: 0)
+function PostProcess.SetChromaticAberration(intensity, start_offset) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Set Post Process Image Effect Settings
+---@param vignette_intensity number | nil @(Default: 0.6)
+---@param grain_jitter number | nil @(Default: 0)
+---@param grain_intensity number | nil @(Default: 0)
+function PostProcess.SetImageEffects(vignette_intensity, grain_jitter, grain_intensity) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Set Post Process Exposure Settings
+---@param exposure_compensation number | nil @(Default: 1)
+---@param min_ev100 number | nil @(Default: -10)
+---@param max_ev100 number | nil @(Default: 20)
+---@param low_percent number | nil @(Default: 10)
+---@param high_percent number | nil @(Default: 90)
+function PostProcess.SetExposure(exposure_compensation, min_ev100, max_ev100, low_percent, high_percent) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Set Post Process Film Settings
+---@param slope number | nil @(Default: 0.8)
+---@param toe number | nil @(Default: 0.55)
+---@param shoulder number | nil @(Default: 0.26)
+---@param black_clip number | nil @(Default: 0)
+---@param white_clip number | nil @(Default: 0.3)
+function PostProcess.SetFilm(slope, toe, shoulder, black_clip, white_clip) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Set Post Process Saturation Colors. Use Alpha for everall Saturation intensity
+---@param color Color 
+function PostProcess.SetGlobalSaturation(color) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Set Post Process Lookup Table Texture
+---@param texture_path string 
+function PostProcess.SetLookupTable(texture_path) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Sets a Post Process Material
+---@param material_path string @The Material Asset to set as Post Process
+function PostProcess.SetMaterial(material_path) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Removes the current Post Process Material
+function PostProcess.RemoveMaterial() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Sets the sun's angle (0-360)
+---@param angle number 
+function PostProcess.SetSunAngle(angle) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Draws Debug shapes in the world.
+---@class Debug
+Debug = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Draws a Debug box in the world
+---@param location Vector 
+---@param extent Vector 
+---@param rotation Rotator 
+---@param color Color 
+---@param life_time number 
+---@param thickness number 
+function Debug.DrawBox(location, extent, rotation, color, life_time, thickness) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Draws a Debug coordinate system in the world
+---@param location Vector 
+---@param rotation Rotator 
+---@param size number 
+---@param life_time number 
+---@param thickness number 
+function Debug.DrawCoordinateSystem(location, rotation, size, life_time, thickness) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Draws a Debug crosshair in the world
+---@param location Vector 
+---@param rotation Rotator 
+---@param size number | nil @(Default: 100)
+---@param color Color | nil @(Default: Color.RED)
+---@param life_time number 
+---@param thickness number 
+function Debug.DrawCrosshairs(location, rotation, size, color, life_time, thickness) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Draws a Debug cylinder in the world
+---@param start_location Vector 
+---@param end_location Vector 
+---@param radius number 
+---@param segments integer 
+---@param color Color | nil @(Default: Color.RED)
+---@param life_time number 
+---@param thickness number 
+function Debug.DrawCylinder(start_location, end_location, radius, segments, color, life_time, thickness) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Draws a Debug directional arrow in the world
+---@param start_location Vector 
+---@param end_location Vector 
+---@param arrow_size number | nil @(Default: 100)
+---@param color Color | nil @(Default: Color.RED)
+---@param life_time number 
+---@param thickness number 
+function Debug.DrawDirectionalArrow(start_location, end_location, arrow_size, color, life_time, thickness) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Draws a Debug Line in the World
+---@param start_position Vector 
+---@param end_position Vector 
+---@param color Color | nil @(Default: Color.RED)
+---@param life_time number 
+---@param thickness number 
+function Debug.DrawLine(start_position, end_position, color, life_time, thickness) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Draws a Debug Point in the World
+---@param start_position Vector 
+---@param color Color | nil @(Default: Color.RED)
+---@param life_time number 
+---@param size number 
+function Debug.DrawPoint(start_position, color, life_time, size) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Draws a Debug sphere in the World
+---@param start_location Vector 
+---@param radius number 
+---@param segments integer 
+---@param color Color | nil @(Default: Color.RED)
+---@param life_time number 
+---@param thickness number 
+function Debug.DrawSphere(start_location, radius, segments, color, life_time, thickness) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Draws a Debug string in the world
+---@param location Vector 
+---@param text string 
+---@param color Color | nil @(Default: Color.RED)
+---@param life_time number 
+---@param draw_shadow boolean 
+---@param font_scale number 
+function Debug.DrawString(location, text, color, life_time, draw_shadow, font_scale) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Class which represents the current Package
+---@class Package
+Package = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Makes any variable available in the global scope
+---@param variable_name string @Name of the variable to export
+---@param value any @Value to be set in the global scope
+function Package.Export(variable_name, value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Includes new .lua files<br/><br/>We currently support 5 searchers, which are looked in the following order:<br/><ol><li>Relative to <code>current-file-path/</code></li><li>Relative to <code>current-package/Client/</code> or <code>current-package/Server/</code> (depending on your side)</li><li>Relative to <code>current-package/Shared/</code></li><li>Relative to <code>current-package/</code></li><li>Relative to <code>Packages/</code></li></ol>
+---@param script_file string @Path to the script file to require
+---@param force_load boolean | nil @Whether to force loading this file even if it was already loaded
+---@return any @Any return values from the included file
+function Package.Require(script_file, force_load) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Sets a Persistent Value which will be saved to disk
+---@param key string @Key to index data into
+---@param value any @Value to set at the key
+function Package.SetPersistentData(key, value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets a list of all files in this package, optionally with filters
+---@param path_filter string | nil @Path filter (Default: "")
+---@return string[] @List of directories
+function Package.GetDirectories(path_filter) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets a list of all files in this package, optionally with filters
+---@param path_filter string|table | nil @Path filter (Default: "")
+---@param extension_filter string | nil @Example: <code>.lua</code> (Default: "")
+---@return string[] @List of files
+function Package.GetFiles(path_filter, extension_filter) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns the package name/path
+---@return string @The package name/path
+function Package.GetName() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns the package title
+---@return string @The package title
+function Package.GetTitle() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns the package version
+---@return string @The package version
+function Package.GetVersion() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns the package compatibility version
+---@return string @The package compatibility version
+function Package.GetCompatibilityVersion() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets the Persistent Value from the disk
+---@param key string | nil @The key to get the data (Default: "")
+---@return table @Persistent values from disk
+function Package.GetPersistentData(key) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Flushes the Persistent Data pending changes to disk immediately
+function Package.FlushPersistentData() end
+
+---Subscribe to an event
+---@param event_name string @Name of the event to subscribe to
+---@param callback function @Function to call when the event is triggered
+---@return function @The callback function passed
+---@overload fun(event_name: "Load", callback: fun()): fun() @Called when this package is loaded<br/><br/>This event is triggered differently depending on the situation:<br/><ul><li>When the <b>server starts</b> or you run <code>package reload all</code> the event triggers only after ALL packages are loaded.</li><li>In all other cases (<code>package load/reload</code> or <code>Package.Load/Reload</code>) the event is triggered immediately after the package is loaded/reloaded.</li></ul>
+---@overload fun(event_name: "Unload", callback: fun()): fun() @Called when this package is unloaded
+function Package.Subscribe(event_name, callback) end
+
+---Unsubscribe from an event
+---@param event_name string @Name of the event to unsubscribe from
+---@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
+---@overload fun(event_name: "Load", callback: fun()) @Called when this package is loaded<br/><br/>This event is triggered differently depending on the situation:<br/><ul><li>When the <b>server starts</b> or you run <code>package reload all</code> the event triggers only after ALL packages are loaded.</li><li>In all other cases (<code>package load/reload</code> or <code>Package.Load/Reload</code>) the event is triggered immediately after the package is loaded/reloaded.</li></ul>
+---@overload fun(event_name: "Unload", callback: fun()) @Called when this package is unloaded
+function Package.Unsubscribe(event_name, callback) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
@@ -4811,203 +5307,6 @@ function Input.Unsubscribe(event_name, callback) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
 ---
----Class which represents the current Package
----@class Package
-Package = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Makes any variable available in the global scope
----@param variable_name string @Name of the variable to export
----@param value any @Value to be set in the global scope
-function Package.Export(variable_name, value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Includes new .lua files<br/><br/>We currently support 5 searchers, which are looked in the following order:<br/><ol><li>Relative to <code>current-file-path/</code></li><li>Relative to <code>current-package/Client/</code> or <code>current-package/Server/</code> (depending on your side)</li><li>Relative to <code>current-package/Shared/</code></li><li>Relative to <code>current-package/</code></li><li>Relative to <code>Packages/</code></li></ol>
----@param script_file string @Path to the script file to require
----@param force_load boolean | nil @Whether to force loading this file even if it was already loaded
----@return any @Any return values from the included file
-function Package.Require(script_file, force_load) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets a Persistent Value which will be saved to disk
----@param key string @Key to index data into
----@param value any @Value to set at the key
-function Package.SetPersistentData(key, value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets a list of all files in this package, optionally with filters
----@param path_filter string | nil @Path filter (Default: "")
----@return string[] @List of directories
-function Package.GetDirectories(path_filter) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets a list of all files in this package, optionally with filters
----@param path_filter string|table | nil @Path filter (Default: "")
----@param extension_filter string | nil @Example: <code>.lua</code> (Default: "")
----@return string[] @List of files
-function Package.GetFiles(path_filter, extension_filter) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns the package name/path
----@return string @The package name/path
-function Package.GetName() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns the package title
----@return string @The package title
-function Package.GetTitle() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns the package version
----@return string @The package version
-function Package.GetVersion() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns the package compatibility version
----@return string @The package compatibility version
-function Package.GetCompatibilityVersion() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets the Persistent Value from the disk
----@param key string | nil @The key to get the data (Default: "")
----@return table @Persistent values from disk
-function Package.GetPersistentData(key) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Flushes the Persistent Data pending changes to disk immediately
-function Package.FlushPersistentData() end
-
----Subscribe to an event
----@param event_name string @Name of the event to subscribe to
----@param callback function @Function to call when the event is triggered
----@return function @The callback function passed
----@overload fun(event_name: "Load", callback: fun()): fun() @Called when this package is loaded<br/><br/>This event is triggered differently depending on the situation:<br/><ul><li>When the <b>server starts</b> or you run <code>package reload all</code> the event triggers only after ALL packages are loaded.</li><li>In all other cases (<code>package load/reload</code> or <code>Package.Load/Reload</code>) the event is triggered immediately after the package is loaded/reloaded.</li></ul>
----@overload fun(event_name: "Unload", callback: fun()): fun() @Called when this package is unloaded
-function Package.Subscribe(event_name, callback) end
-
----Unsubscribe from an event
----@param event_name string @Name of the event to unsubscribe from
----@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
----@overload fun(event_name: "Load", callback: fun()) @Called when this package is loaded<br/><br/>This event is triggered differently depending on the situation:<br/><ul><li>When the <b>server starts</b> or you run <code>package reload all</code> the event triggers only after ALL packages are loaded.</li><li>In all other cases (<code>package load/reload</code> or <code>Package.Load/Reload</code>) the event is triggered immediately after the package is loaded/reloaded.</li></ul>
----@overload fun(event_name: "Unload", callback: fun()) @Called when this package is unloaded
-function Package.Unsubscribe(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Creates a reachable path into navigable space.
----@class Navigation
-Navigation = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Finds random, reachable point in navigable space restricted to radius around origin (only if map has a NavMesh)
----@param origin Vector 
----@param radius number 
----@return Vector @The random point
-function Navigation.GetRandomReachablePointInRadius(origin, radius) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Finds random, point in navigable space restricted to Radius around Origin. Resulting location is not tested for reachability from the Origin (only if map has a NavMesh)
----@param origin Vector 
----@param radius number 
----@return Vector @The random point
-function Navigation.GetRandomPointInNavigableRadius(origin, radius) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Finds a Path given Start and End location (only if map has a NavMesh)
----@param start_location Vector 
----@param end_location Vector 
----@return { IsValid: boolean, IsPartial: boolean, Length: number, Cost: number, PathPoints: Vector[] } 
-function Navigation.FindPathToLocation(start_location, end_location) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Subscribe for user-defined Events.
----@class Events
-Events = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Calls an Event which will be triggered in all Local Packages
----@param event_name string @The Event Name to trigger the event
----@param ... any | nil @Arguments to pass to the event (Default: nil)
-function Events.Call(event_name, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Calls an Event if on Client which will be triggered in all Server Packages
----@param event_name string @The Event Name to trigger the event
----@param ... any | nil @Arguments to pass to the event (Default: nil)
-function Events.CallRemote(event_name, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Calls an Event if on Server which will be triggered in all Client's Packages of a specific Player
----@param event_name string @The Event Name to trigger the event
----@param player Player @The remote player to send this event
----@param ... any | nil @Arguments to pass to the event (Default: nil)
-function Events.CallRemote(event_name, player, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Calls an Event on Server which will be triggered in all Client's Packages of all Players
----@param event_name string @The Event Name to trigger the event
----@param ... any | nil @Arguments to pass to the event (Default: nil)
-function Events.BroadcastRemote(event_name, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Calls an Event on Server which will be triggered in all Client's Packages of all Players in that dimension
----@param dimension integer @The Dimension to send this event
----@param event_name string @The Event Name to trigger the event
----@param ... any | nil @Arguments to pass to the event (Default: nil)
-function Events.BroadcastRemoteDimension(dimension, event_name, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Subscribes for an user-created event which will be triggered for only local called events
----@param event_name string @The Event Name to subscribe
----@param callback function @The callback function to execute
----@return function @the subscribed callback itself
-function Events.Subscribe(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Subscribes for an user-created event which will be triggered for only remote called events
----@param event_name string @The Event Name to subscribe
----@param callback function @The callback function to execute
----@return function @the subscribed callback itself
-function Events.SubscribeRemote(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Unsubscribes from all subscribed events in this Package with that event name, optionally passing the function to unsubscribe only that callback
----@param event_name string @The Event Name to unsubscribe
----@param callback function | nil @The callback function to unsubscribe (Default: nil)
-function Events.Unsubscribe(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Unsubscribes from all subscribed remote events in this Package with that event name, optionally passing the function to unsubscribe only that callback
----@param event_name string @The Event Name to unsubscribe
----@param callback function | nil @The callback function to unsubscribe (Default: nil)
-function Events.UnsubscribeRemote(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
 ---Retrieve Assets Data from Asset Packs.
 ---@class Assets
 Assets = {}
@@ -5098,581 +5397,6 @@ function Assets.Precache(asset_path, asset_type) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
 ---
----A container for rotation information (Pitch, Yaw, Roll). All rotation values are stored in degrees.
----@class Rotator
----@field Pitch number @Rotation around the right axis (around Y axis), Looking up and down (0=Straight Ahead, +Up, -Down)
----@field Yaw number @Rotation around the up axis (around Z axis), Running in circles 0=East, +North, -South.
----@field Roll number @Rotation around the forward axis (around X axis), Tilting your head, 0=Straight, +Clockwise, -CCW.
----@operator add(Rotator|number): Rotator
----@operator sub(Rotator|number): Rotator
----@operator mul(Rotator|number): Rotator
----@overload fun(pitch: number | nil, yaw: number | nil, roll: number | nil): Rotator
-Rotator = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Generates a random rotation, with optional random roll
----@param roll boolean | nil @Whether to use a random roll in the rotator, otherwise uses 0 for roll (Default: false)
----@param min number | nil @Minimum value (Default: -180)
----@param max number | nil @Maximum value (Default: 180)
----@return Rotator @the random rotation
-function Rotator.Random(roll, min, max) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Get the forward (X) unit direction vector from this component, in world space.
----@return Vector @the forward direction
-function Rotator:GetForwardVector() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Get the right (Y) unit direction vector from this component, in world space.
----@return Vector @the right direction
-function Rotator:GetRightVector() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Get the up (Z) unit direction vector from this component, in world space.
----@return Vector @the up direction
-function Rotator:GetUpVector() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Rotate a vector rotated by this rotator.
----@param vector Vector @the vector to rotate by the Rotator
----@return Vector @the rotated vector
-function Rotator:RotateVector(vector) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----In-place normalize, removes all winding and creates the âshortest routeâ rotation.
-function Rotator:Normalize() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns the vector rotated by the inverse of this rotator.
----@param vector Vector @The vector to rotate by the inverse of the Rotator
----@return Vector @the unrotated vector
-function Rotator:UnrotateVector(vector) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Get Rotation as a quaternion.
----@return Quat @the rotation as a quaternion
-function Rotator:Quaternion() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a new Rotator normalized.
----@return Rotator @the normalized Rotator
-function Rotator:GetNormalized() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Checks whether rotator is near to zero within a specified tolerance
----@param tolerance number | nil @Tolerance to check (Default: 0.000001)
----@return boolean @whether the rotator is nearly zero
-function Rotator:IsNearlyZero(tolerance) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Checks whether all components of the rotator are exactly zero
----@return boolean @whether the rotator is exactly zero
-function Rotator:IsZero() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Exposes access to registering Console Commands and Logging messages.
----@class Console
-Console = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Logs and formats a message in the console, with formatted arguments
----@param message string @Message to print
----@param ... any | nil @Other arguments to format with the message using string.format (Default: nil)
-function Console.Log(message, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Logs an orange warning in the console, with formatted arguments
----@param message string @Message to print
----@param ... any | nil @Other arguments to format with the message using string.format (Default: nil)
-function Console.Warn(message, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Logs a red error in the console, with formatted arguments
----@param message string @Message to print
----@param ... any | nil @Other arguments to format with the message using string.format (Default: nil)
-function Console.Error(message, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Registers a new Console Command
----@param command string @The command
----@param callback function @The callback to be called when the command is inputted
----@param description string @The command description to display in the console
----@param parameters string[] @The list of supported parameters to display in the console
-function Console.RegisterCommand(command, callback, description, parameters) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Runs a Console Command programmatically
----@param command string @The command
-function Console.RunCommand(command) end
-
----Subscribe to an event
----@param event_name string @Name of the event to subscribe to
----@param callback function @Function to call when the event is triggered
----@return function @The callback function passed
----@overload fun(event_name: "PlayerSubmit", callback: fun(text: string)): fun(text: string) @Called when a console command is submitted
----@overload fun(event_name: "LogEntry", callback: fun(text: string, type: LogType)): fun(text: string, type: LogType) @Called when a log is received
----@overload fun(event_name: "Open", callback: fun()): fun() @When player opens the Console
----@overload fun(event_name: "Close", callback: fun()): fun() @When player closes the Console
-function Console.Subscribe(event_name, callback) end
-
----Unsubscribe from an event
----@param event_name string @Name of the event to unsubscribe from
----@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
----@overload fun(event_name: "PlayerSubmit", callback: fun(text: string)) @Called when a console command is submitted
----@overload fun(event_name: "LogEntry", callback: fun(text: string, type: LogType)) @Called when a log is received
----@overload fun(event_name: "Open", callback: fun()) @When player opens the Console
----@overload fun(event_name: "Close", callback: fun()) @When player closes the Console
-function Console.Unsubscribe(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Work with screen properties and effects.
----@class Viewport
-Viewport = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Transforms a 3D world-space vector into 2D screen coordinates
----@param world_position Vector @World 3D position
----@return Vector2D 
-function Viewport.ProjectWorldToScreen(world_position) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Transforms a 2D screen coordinates into 3D world-space location
----@param screen_position Vector2D @Screen position
----@return { Position: Vector, Direction: Vector } 
-function Viewport.DeprojectScreenToWorld(screen_position) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Loads and sets a hardware cursor in the game from a PNG image
----@param cursor_shape CursorType 
----@param cursor_path string @a PNG image relative to Assets/
----@param hotspot Vector2D | nil @(Default: Vector(0, 0))
-function Viewport.SetHardwareCursor(cursor_shape, cursor_path, hotspot) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Gets the size of viewport
----@return Vector2D @The size of viewport
-function Viewport.GetViewportSize() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Gets the scale of viewport
----@return number @The scale of viewport
-function Viewport.GetViewportScale() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Sets the mouse position
----@param new_position Vector2D 
-function Viewport.SetMousePosition(new_position) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Gets the current mouse screen location
----@return Vector2D @The current mouse screen location
-function Viewport.GetMousePosition() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Enables/Disables the Crosshair
----@param is_enabled boolean 
-function Viewport.SetCrosshairEnabled(is_enabled) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Enables/Disables the Blood Screen effect
----@param is_enabled boolean 
-function Viewport.SetBloodScreenEnabled(is_enabled) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----If you want the Blood Screen to do not be overridden, disable it with <code>Client.SetBloodScreenEnabled(false)</code> before
----@param intensity number @From 0.0 to 1.0
-function Viewport.SetBloodScreenIntensity(intensity) end
-
----Subscribe to an event
----@param event_name string @Name of the event to subscribe to
----@param callback function @Function to call when the event is triggered
----@return function @The callback function passed
----@overload fun(event_name: "Resize", callback: fun(new_size: Vector2D)): fun(new_size: Vector2D) @Called when the screen is resized
-function Viewport.Subscribe(event_name, callback) end
-
----Unsubscribe from an event
----@param event_name string @Name of the event to unsubscribe from
----@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
----@overload fun(event_name: "Resize", callback: fun(new_size: Vector2D)) @Called when the screen is resized
-function Viewport.Unsubscribe(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----A color composed of components (R, G, B, A) with floating point precision.
----@class Color
----@field R number @Red color percentage (0-1)
----@field G number @Green color percentage (0-1)
----@field B number @Blue color percentage (0-1)
----@field A number @Alpha transparency percentage (0-1)
----@operator add(Color|number): Color
----@operator sub(Color|number): Color
----@operator mul(Color|number): Color
----@operator div(Color|number): Color
----@overload fun(R: number | nil, G: number | nil, B: number | nil, A: number | nil): Color
-Color = {}
-Color.WHITE = Color(1, 1, 1)
-Color.BLACK = Color(0, 0, 0)
-Color.TRANSPARENT = Color(0, 0, 0, 0)
-Color.RED = Color(1, 0, 0)
-Color.GREEN = Color(0, 1, 0)
-Color.BLUE = Color(0, 0, 1)
-Color.YELLOW = Color(1, 1, 0)
-Color.CYAN = Color(0, 1, 1)
-Color.MAGENTA = Color(1, 0, 1)
-Color.ORANGE = Color(1, 0.5, 0)
-Color.CHARTREUSE = Color(0.5, 1, 1)
-Color.AQUAMARINE = Color(0, 1, 0.5)
-Color.AZURE = Color(0, 0.5, 1)
-Color.VIOLET = Color(0.5, 0, 1)
-Color.ROSE = Color(1, 0, 0.5)
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a random color from Color Palette
----@param includes_black boolean | nil @Includes blacks in the scope (Default: true)
----@return Color @Random color from Color Palette
-function Color.RandomPalette(includes_black) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a random color from all color scope
----@return Color @Random color from all color scope
-function Color.Random() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns the color from 0-255 range values
----@param r number | nil @Red (Default: 0)
----@param g number | nil @Green (Default: 0)
----@param b number | nil @Blue (Default: 0)
----@param a number | nil @Alpha (Default: 0)
----@return Color @Final Color
-function Color.FromRGBA(r, g, b, a) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a color from the CYMK format
----@param c number | nil @Cyan (Default: 0)
----@param y number | nil @Yellow (Default: 0)
----@param m number | nil @Magenta (Default: 0)
----@param k number | nil @Black (Default: 0)
----@param a number | nil @Alpha (Default: 0)
----@return Color @Final Color
-function Color.FromCYMK(c, y, m, k, a) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a color from the HSL format
----@param h number | nil @Hue (Default: 0)
----@param s number | nil @Saturation (Default: 0)
----@param l number | nil @Lightness (Default: 0)
----@return Color @Final Color
-function Color.FromHSL(h, s, l) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a color from the HSV format
----@param h number | nil @Hue (Default: 0)
----@param s number | nil @Saturation (Default: 0)
----@param v number | nil @Value (Default: 0)
----@return Color @Final Color
-function Color.FromHSV(h, s, v) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a color from the Hexadecimal format
----@param hex string @Hexadecimal
----@return Color @Final Color
-function Color.FromHEX(hex) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Gets the Hexadecimal representation of this Color
----@param appends_transparency boolean | nil @Appends transparency part (Default: true)
----@return string @Hexadecimal representation of this Color
-function Color:ToHex(appends_transparency) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Execute code at specified time intervals.
----@class Timer
-Timer = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Executes a function, after waiting a specified number of milliseconds
----@param callback function @The callback that will be executed
----@param milliseconds integer | nil @The time in milliseconds to wait before executing the function (Default: 0)
----@param ... any | nil @Additional parameters to pass to the function (Default: nil)
----@return integer @the timeout_id
-function Timer.SetTimeout(callback, milliseconds, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Same as SetTimeout(), but repeats the execution of the function continuously
----@param callback function @The callback that will be executed.<br/>Return false to stop it from being called.
----@param milliseconds integer | nil @The time in milliseconds the timer should delay in between executions of the specified function (Default: 0)
----@param ... any | nil @Additional parameters to pass to the function (Default: nil)
----@return integer @the interval_id
-function Timer.SetInterval(callback, milliseconds, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Stops the execution of the function specified in SetTimeout()
----@param timeout_id integer @The ID value returned by SetTimeout() is used as the parameter for this method
-function Timer.ClearTimeout(timeout_id) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Stops the execution of the function specified in SetInterval()
----@param interval_id integer @The ID value returned by SetInterval() is used as the parameter for this method
-function Timer.ClearInterval(interval_id) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Binds a Timer to any Actor. The timer will be automatically cleared when the Actor is destroyed
----@param timer_id integer @The Timer ID
----@param actor Actor @Actor to be bound
-function Timer.Bind(timer_id, actor) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Checks if a Timer is currently active or waiting to be triggered
----@param timer_id integer @The Timer ID
----@return boolean 
-function Timer.IsValid(timer_id) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns the time elapsed since the last tick
----@param timer_id integer @The Timer ID
----@return integer 
-function Timer.GetElapsedTime(timer_id) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns the time remaining to the next tick
----@param timer_id integer @The Timer ID
----@return integer 
-function Timer.GetRemainingTime(timer_id) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Pauses the Timer
----@param timer_id integer @The Timer ID
-function Timer.Pause(timer_id) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Resumes the Timer
----@param timer_id integer @The Timer ID
-function Timer.Resume(timer_id) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Resets a Timer to restart from beginning
----@param timer_id integer @The Timer ID
-function Timer.ResetElapsedTime(timer_id) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Configure, send and intercept chat messages.
----@class Chat
-Chat = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Adds a chat message which will display local only
----@param message string 
-function Chat.AddMessage(message) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sends a chat message to a Player only
----@param player Player @The player to receive the message
----@param message string @The message
-function Chat.SendMessage(player, message) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Configures the Chat visuals and position
----@param screen_location Vector2D | nil @(Default: Vector2D(-25, 0))
----@param size Vector2D | nil @(Default: Vector2D(600, 250))
----@param anchors_min Vector2D | nil @(Default: Vector2D(1, 0.5))
----@param anchors_max Vector2D | nil @(Default: Vector2D(1, 0.5))
----@param alignment Vector2D | nil @(Default: Vector2D(1, 0.5))
----@param justify boolean | nil @(Default: true)
----@param show_scrollbar boolean | nil @(Default: true)
-function Chat.SetConfiguration(screen_location, size, anchors_min, anchors_max, alignment, justify, show_scrollbar) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Sets if the Chat is visible or not
----@param is_visible boolean 
-function Chat.SetVisibility(is_visible) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Clears all messages
-function Chat.Clear() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Sends a chat message to all Players
----@param message string @The message to send to all Players
-function Chat.BroadcastMessage(message) end
-
----Subscribe to an event
----@param event_name string @Name of the event to subscribe to
----@param callback function @Function to call when the event is triggered
----@return function @The callback function passed
----@overload fun(event_name: "PlayerSubmit", callback: fun(message: string, player: Player): boolean | nil): fun(message: string, player: Player): boolean | nil @Called when a player submits a message in the chat
----@overload fun(event_name: "ChatEntry", callback: fun(message: string, player: Player | nil)): fun(message: string, player: Player | nil) @Called when a new Chat Message is received, this is also triggered when new messages are sent programatically<br/><br/>This is useful for creating your own Chat interface while still use the built-in system
----@overload fun(event_name: "Open", callback: fun()): fun() @When player opens the Chat
----@overload fun(event_name: "Close", callback: fun()): fun() @When player closes the Chat
-function Chat.Subscribe(event_name, callback) end
-
----Unsubscribe from an event
----@param event_name string @Name of the event to unsubscribe from
----@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
----@overload fun(event_name: "PlayerSubmit", callback: fun(message: string, player: Player): boolean | nil) @Called when a player submits a message in the chat
----@overload fun(event_name: "ChatEntry", callback: fun(message: string, player: Player | nil)) @Called when a new Chat Message is received, this is also triggered when new messages are sent programatically<br/><br/>This is useful for creating your own Chat interface while still use the built-in system
----@overload fun(event_name: "Open", callback: fun()) @When player opens the Chat
----@overload fun(event_name: "Close", callback: fun()) @When player closes the Chat
-function Chat.Unsubscribe(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Draws Debug shapes in the world.
----@class Debug
-Debug = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Draws a Debug box in the world
----@param location Vector 
----@param extent Vector 
----@param rotation Rotator 
----@param color Color 
----@param life_time number 
----@param thickness number 
-function Debug.DrawBox(location, extent, rotation, color, life_time, thickness) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Draws a Debug coordinate system in the world
----@param location Vector 
----@param rotation Rotator 
----@param size number 
----@param life_time number 
----@param thickness number 
-function Debug.DrawCoordinateSystem(location, rotation, size, life_time, thickness) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Draws a Debug crosshair in the world
----@param location Vector 
----@param rotation Rotator 
----@param size number | nil @(Default: 100)
----@param color Color | nil @(Default: Color.RED)
----@param life_time number 
----@param thickness number 
-function Debug.DrawCrosshairs(location, rotation, size, color, life_time, thickness) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Draws a Debug cylinder in the world
----@param start_location Vector 
----@param end_location Vector 
----@param radius number 
----@param segments integer 
----@param color Color | nil @(Default: Color.RED)
----@param life_time number 
----@param thickness number 
-function Debug.DrawCylinder(start_location, end_location, radius, segments, color, life_time, thickness) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Draws a Debug directional arrow in the world
----@param start_location Vector 
----@param end_location Vector 
----@param arrow_size number | nil @(Default: 100)
----@param color Color | nil @(Default: Color.RED)
----@param life_time number 
----@param thickness number 
-function Debug.DrawDirectionalArrow(start_location, end_location, arrow_size, color, life_time, thickness) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Draws a Debug Line in the World
----@param start_position Vector 
----@param end_position Vector 
----@param color Color | nil @(Default: Color.RED)
----@param life_time number 
----@param thickness number 
-function Debug.DrawLine(start_position, end_position, color, life_time, thickness) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Draws a Debug Point in the World
----@param start_position Vector 
----@param color Color | nil @(Default: Color.RED)
----@param life_time number 
----@param size number 
-function Debug.DrawPoint(start_position, color, life_time, size) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Draws a Debug sphere in the World
----@param start_location Vector 
----@param radius number 
----@param segments integer 
----@param color Color | nil @(Default: Color.RED)
----@param life_time number 
----@param thickness number 
-function Debug.DrawSphere(start_location, radius, segments, color, life_time, thickness) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Draws a Debug string in the world
----@param location Vector 
----@param text string 
----@param color Color | nil @(Default: Color.RED)
----@param life_time number 
----@param draw_shadow boolean 
----@param font_scale number 
-function Debug.DrawString(location, text, color, life_time, draw_shadow, font_scale) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
 ---A Vector composed of components (X, Y, Z) with floating point precision. Used mainly for entity position.
 ---@class Vector
 ---@field X number @X Coordinate
@@ -5757,18 +5481,66 @@ function Vector:SizeSquared() end
 ---@return Rotator @The orientation of the vector
 function Vector:Rotation() end
 
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
----A Vector2D composed of components (X, Y) with floating point precision. Used mainly for HUD and Drawing on screen.
----@class Vector2D
----@field X number @X Coordinate
----@field Y number @Y Coordinate
----@operator add(Vector2D|number): Vector2D
----@operator sub(Vector2D|number): Vector2D
----@operator mul(Vector2D|number): Vector2D
----@operator div(Vector2D|number): Vector2D
----@overload fun(X: number | nil, Y: number | nil): Vector2D
-Vector2D = {}
+---Work with Unreal level in runtime.
+---@class Level
+Level = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Loads a Level in runtime
+---@param level_name string 
+---@param should_block_on_load boolean | nil @If this should be a blocking operation - the game will freeze (Default: false)
+---@param make_visible_after_load boolean | nil @If this should be visible automatically after loaded (Default: true)
+function Level.LoadStreamLevel(level_name, should_block_on_load, make_visible_after_load) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Unloads a Level in runtime
+---@param level_name string 
+---@param should_block_on_unload boolean | nil @If this should be a blocking operation - the game will freeze (Default: false)
+function Level.UnloadStreamLevel(level_name, should_block_on_unload) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Sets a Stream Level visibility
+---@param level_name string 
+---@param visibility boolean @If this level should be visible
+function Level.SetStreamLevelVisibility(level_name, visibility) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Gets a list of all Stream Levels
+---@return { name: string, is_loaded: boolean, is_visible: boolean }[] 
+function Level.GetStreamLevels() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Calls a Level Blueprint custom event (which can be added when creating levels through Unreal Engine)
+---@param event_name string @Event or Function name
+---@param ... any | nil @Sequence of arguments to pass to the event (Default: nil)
+---@return any... @the function return values
+function Level.CallLevelBlueprintEvent(event_name, ...) end
+
+---Subscribe to an event
+---@param event_name string @Name of the event to subscribe to
+---@param callback function @Function to call when the event is triggered
+---@return function @The callback function passed
+---@overload fun(event_name: "StreamLevelLoad", callback: fun(level_name: string)): fun(level_name: string) @Called when a Stream Level is loaded
+---@overload fun(event_name: "StreamLevelUnload", callback: fun(level_name: string)): fun(level_name: string) @Called when a Stream Level is unloaded
+---@overload fun(event_name: "StreamLevelShow", callback: fun(level_name: string)): fun(level_name: string) @Called when a Stream Level is shown
+---@overload fun(event_name: "StreamLevelHide", callback: fun(level_name: string)): fun(level_name: string) @Called when a Stream Level is hidden
+function Level.Subscribe(event_name, callback) end
+
+---Unsubscribe from an event
+---@param event_name string @Name of the event to unsubscribe from
+---@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
+---@overload fun(event_name: "StreamLevelLoad", callback: fun(level_name: string)) @Called when a Stream Level is loaded
+---@overload fun(event_name: "StreamLevelUnload", callback: fun(level_name: string)) @Called when a Stream Level is unloaded
+---@overload fun(event_name: "StreamLevelShow", callback: fun(level_name: string)) @Called when a Stream Level is shown
+---@overload fun(event_name: "StreamLevelHide", callback: fun(level_name: string)) @Called when a Stream Level is hidden
+function Level.Unsubscribe(event_name, callback) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
 ---
@@ -5999,64 +5771,389 @@ function Server.Unsubscribe(event_name, callback) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
----Work with Unreal level in runtime.
----@class Level
-Level = {}
+---Initialize and set Discord activity.
+---@class Discord
+Discord = {}
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
----Loads a Level in runtime
----@param level_name string 
----@param should_block_on_load boolean | nil @If this should be a blocking operation - the game will freeze (Default: false)
----@param make_visible_after_load boolean | nil @If this should be visible automatically after loaded (Default: true)
-function Level.LoadStreamLevel(level_name, should_block_on_load, make_visible_after_load) end
+---Initializes the Discord Integration with your custom client_id
+---@param client_id integer 
+function Discord.Initialize(client_id) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
----Unloads a Level in runtime
----@param level_name string 
----@param should_block_on_unload boolean | nil @If this should be a blocking operation - the game will freeze (Default: false)
-function Level.UnloadStreamLevel(level_name, should_block_on_unload) end
+---Communicates with Discord and sets a custom user status
+---@param state string 
+---@param details string 
+---@param large_image string 
+---@param large_text string 
+---@param reset_time string | nil @Whether or not to reset current activity elapsed time (Default: false)
+function Discord.SetActivity(state, details, large_image, large_text, reset_time) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
----Sets a Stream Level visibility
----@param level_name string 
----@param visibility boolean @If this level should be visible
-function Level.SetStreamLevelVisibility(level_name, visibility) end
+---Interact with Steam APIs.
+---@class Steam
+Steam = {}
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
----Gets a list of all Stream Levels
----@return { name: string, is_loaded: boolean, is_visible: boolean }[] 
-function Level.GetStreamLevels() end
+---Sets Steam Rich Presence text
+---@param text string 
+function Steam.SetRichPresence(text) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---A Matrix is an array of numbers this can be used for geometric and positional calculations. This is mainly used internally.
+---@class Matrix
+---@overload fun(rotation: Rotator, origin: Vector): Matrix
+Matrix = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Transform the vector with the matrix
+---@param vector Vector @The vector who will be transformed
+---@return Vector @The new vector
+function Matrix:TransformVector(vector) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a new matrix transposed (<a href="https://en.wikipedia.org/wiki/Transpose">Wikipedia</a>)
+---@return Matrix @The matrix transpoosed
+function Matrix:GetTransposed() end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
----Calls a Level Blueprint custom event (which can be added when creating levels through Unreal Engine)
----@param event_name string @Event or Function name
----@param ... any | nil @Sequence of arguments to pass to the event (Default: nil)
----@return any... @the function return values
-function Level.CallLevelBlueprintEvent(event_name, ...) end
+---Work with screen properties and effects.
+---@class Viewport
+Viewport = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Transforms a 3D world-space vector into 2D screen coordinates
+---@param world_position Vector @World 3D position
+---@return Vector2D 
+function Viewport.ProjectWorldToScreen(world_position) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Transforms a 2D screen coordinates into 3D world-space location
+---@param screen_position Vector2D @Screen position
+---@return { Position: Vector, Direction: Vector } 
+function Viewport.DeprojectScreenToWorld(screen_position) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Loads and sets a hardware cursor in the game from a PNG image
+---@param cursor_shape CursorType 
+---@param cursor_path string @a PNG image relative to Assets/
+---@param hotspot Vector2D | nil @(Default: Vector(0, 0))
+function Viewport.SetHardwareCursor(cursor_shape, cursor_path, hotspot) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Gets the size of viewport
+---@return Vector2D @The size of viewport
+function Viewport.GetViewportSize() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Gets the scale of viewport
+---@return number @The scale of viewport
+function Viewport.GetViewportScale() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Sets the mouse position
+---@param new_position Vector2D 
+function Viewport.SetMousePosition(new_position) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Gets the current mouse screen location
+---@return Vector2D @The current mouse screen location
+function Viewport.GetMousePosition() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Enables/Disables the Crosshair
+---@param is_enabled boolean 
+function Viewport.SetCrosshairEnabled(is_enabled) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Enables/Disables the Blood Screen effect
+---@param is_enabled boolean 
+function Viewport.SetBloodScreenEnabled(is_enabled) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---If you want the Blood Screen to do not be overridden, disable it with <code>Client.SetBloodScreenEnabled(false)</code> before
+---@param intensity number @From 0.0 to 1.0
+function Viewport.SetBloodScreenIntensity(intensity) end
 
 ---Subscribe to an event
 ---@param event_name string @Name of the event to subscribe to
 ---@param callback function @Function to call when the event is triggered
 ---@return function @The callback function passed
----@overload fun(event_name: "StreamLevelLoad", callback: fun(level_name: string)): fun(level_name: string) @Called when a Stream Level is loaded
----@overload fun(event_name: "StreamLevelUnload", callback: fun(level_name: string)): fun(level_name: string) @Called when a Stream Level is unloaded
----@overload fun(event_name: "StreamLevelShow", callback: fun(level_name: string)): fun(level_name: string) @Called when a Stream Level is shown
----@overload fun(event_name: "StreamLevelHide", callback: fun(level_name: string)): fun(level_name: string) @Called when a Stream Level is hidden
-function Level.Subscribe(event_name, callback) end
+---@overload fun(event_name: "Resize", callback: fun(new_size: Vector2D)): fun(new_size: Vector2D) @Called when the screen is resized
+function Viewport.Subscribe(event_name, callback) end
 
 ---Unsubscribe from an event
 ---@param event_name string @Name of the event to unsubscribe from
 ---@param callback function @Optional callback to unsubscribe (if no callback is passed then all callbacks in this Package will be unsubscribed from this event)
----@overload fun(event_name: "StreamLevelLoad", callback: fun(level_name: string)) @Called when a Stream Level is loaded
----@overload fun(event_name: "StreamLevelUnload", callback: fun(level_name: string)) @Called when a Stream Level is unloaded
----@overload fun(event_name: "StreamLevelShow", callback: fun(level_name: string)) @Called when a Stream Level is shown
----@overload fun(event_name: "StreamLevelHide", callback: fun(level_name: string)) @Called when a Stream Level is hidden
-function Level.Unsubscribe(event_name, callback) end
+---@overload fun(event_name: "Resize", callback: fun(new_size: Vector2D)) @Called when the screen is resized
+function Viewport.Unsubscribe(event_name, callback) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Trace a ray against the world and get collided objects information.
+---@class Trace
+Trace = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Trace a ray against the world and returns a table with the first blocking hit information<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.
+---@param start_location Vector @Start location of the ray
+---@param end_location Vector @End location of the ray
+---@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
+---@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
+---@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
+---@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D } 
+function Trace.LineSingle(start_location, end_location, collision_channel, trace_mode, ignored_actors) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Trace a ray against the world using object types and return overlapping hits and then first blocking hit<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.<br/><br/>Results are sorted, so a blocking hit (if found) will be the last element of the array<br/><br/>Only the single closest blocking result will be generated, no tests will be done after that
+---@param start_location Vector @Start location of the ray
+---@param end_location Vector @End location of the ray
+---@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
+---@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
+---@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
+---@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D }[] 
+function Trace.LineMulti(start_location, end_location, collision_channel, trace_mode, ignored_actors) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Trace a sphere against the world and returns a table with the first blocking hit information<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.
+---@param start_location Vector @Start location of the sphere
+---@param end_location Vector @End location of the sphere
+---@param radius number @Radius of the sphere
+---@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
+---@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
+---@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
+---@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D } 
+function Trace.SphereSingle(start_location, end_location, radius, collision_channel, trace_mode, ignored_actors) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Trace a sphere against the world using object types and return overlapping hits and then first blocking hit<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.<br/><br/>Results are sorted, so a blocking hit (if found) will be the last element of the array<br/><br/>Only the single closest blocking result will be generated, no tests will be done after that
+---@param start_location Vector @Start location of the sphere
+---@param end_location Vector @End location of the sphere
+---@param radius number @Radius of the sphere
+---@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
+---@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
+---@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
+---@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D }[] 
+function Trace.SphereMulti(start_location, end_location, radius, collision_channel, trace_mode, ignored_actors) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Trace a box against the world and returns a table with the first blocking hit information<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.
+---@param start_location Vector @Start location of the box
+---@param end_location Vector @End location of the box
+---@param half_size Vector @Distance from the center of box along each axis
+---@param orientation Rotator @Orientation of the box
+---@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
+---@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
+---@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
+---@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D } 
+function Trace.BoxSingle(start_location, end_location, half_size, orientation, collision_channel, trace_mode, ignored_actors) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Trace a box against the world using object types and return overlapping hits and then first blocking hit<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.<br/><br/>Results are sorted, so a blocking hit (if found) will be the last element of the array<br/><br/>Only the single closest blocking result will be generated, no tests will be done after that
+---@param start_location Vector @Start location of the box
+---@param end_location Vector @End location of the box
+---@param half_size Vector @Distance from the center of box along each axis
+---@param orientation Rotator @Orientation of the box
+---@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
+---@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
+---@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
+---@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D }[] 
+function Trace.BoxMulti(start_location, end_location, half_size, orientation, collision_channel, trace_mode, ignored_actors) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Trace a capsule against the world and returns a table with the first blocking hit information<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.
+---@param start_location Vector @Start location of the capsule
+---@param end_location Vector @End location of the capsule
+---@param radius number @Radius of the capsule to sweep
+---@param half_height number @Distance from center of capsule to tip of hemisphere endcap.
+---@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
+---@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
+---@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
+---@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D } 
+function Trace.CapsuleSingle(start_location, end_location, radius, half_height, collision_channel, trace_mode, ignored_actors) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Trace a capsule against the world using object types and return overlapping hits and then first blocking hit<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.<br/><br/>Results are sorted, so a blocking hit (if found) will be the last element of the array<br/><br/>Only the single closest blocking result will be generated, no tests will be done after that
+---@param start_location Vector @Start location of the capsule
+---@param end_location Vector @End location of the capsule
+---@param radius number @Radius of the capsule to sweep
+---@param half_height number @Distance from center of capsule to tip of hemisphere endcap.
+---@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
+---@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
+---@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
+---@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D }[] 
+function Trace.CapsuleMulti(start_location, end_location, radius, half_height, collision_channel, trace_mode, ignored_actors) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Creates a reachable path into navigable space.
+---@class Navigation
+Navigation = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Finds random, reachable point in navigable space restricted to radius around origin (only if map has a NavMesh)
+---@param origin Vector 
+---@param radius number 
+---@return Vector @The random point
+function Navigation.GetRandomReachablePointInRadius(origin, radius) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Finds random, point in navigable space restricted to Radius around Origin. Resulting location is not tested for reachability from the Origin (only if map has a NavMesh)
+---@param origin Vector 
+---@param radius number 
+---@return Vector @The random point
+function Navigation.GetRandomPointInNavigableRadius(origin, radius) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
+---
+---Finds a Path given Start and End location (only if map has a NavMesh)
+---@param start_location Vector 
+---@param end_location Vector 
+---@return { IsValid: boolean, IsPartial: boolean, Length: number, Cost: number, PathPoints: Vector[] } 
+function Navigation.FindPathToLocation(start_location, end_location) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---A container for rotation information (Pitch, Yaw, Roll). All rotation values are stored in degrees.
+---@class Rotator
+---@field Pitch number @Rotation around the right axis (around Y axis), Looking up and down (0=Straight Ahead, +Up, -Down)
+---@field Yaw number @Rotation around the up axis (around Z axis), Running in circles 0=East, +North, -South.
+---@field Roll number @Rotation around the forward axis (around X axis), Tilting your head, 0=Straight, +Clockwise, -CCW.
+---@operator add(Rotator|number): Rotator
+---@operator sub(Rotator|number): Rotator
+---@operator mul(Rotator|number): Rotator
+---@overload fun(pitch: number | nil, yaw: number | nil, roll: number | nil): Rotator
+Rotator = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Generates a random rotation, with optional random roll
+---@param roll boolean | nil @Whether to use a random roll in the rotator, otherwise uses 0 for roll (Default: false)
+---@param min number | nil @Minimum value (Default: -180)
+---@param max number | nil @Maximum value (Default: 180)
+---@return Rotator @the random rotation
+function Rotator.Random(roll, min, max) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Get the forward (X) unit direction vector from this component, in world space.
+---@return Vector @the forward direction
+function Rotator:GetForwardVector() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Get the right (Y) unit direction vector from this component, in world space.
+---@return Vector @the right direction
+function Rotator:GetRightVector() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Get the up (Z) unit direction vector from this component, in world space.
+---@return Vector @the up direction
+function Rotator:GetUpVector() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Rotate a vector rotated by this rotator.
+---@param vector Vector @the vector to rotate by the Rotator
+---@return Vector @the rotated vector
+function Rotator:RotateVector(vector) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---In-place normalize, removes all winding and creates the âshortest routeâ rotation.
+function Rotator:Normalize() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns the vector rotated by the inverse of this rotator.
+---@param vector Vector @The vector to rotate by the inverse of the Rotator
+---@return Vector @the unrotated vector
+function Rotator:UnrotateVector(vector) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Get Rotation as a quaternion.
+---@return Quat @the rotation as a quaternion
+function Rotator:Quaternion() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a new Rotator normalized.
+---@return Rotator @the normalized Rotator
+function Rotator:GetNormalized() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Checks whether rotator is near to zero within a specified tolerance
+---@param tolerance number | nil @Tolerance to check (Default: 0.000001)
+---@return boolean @whether the rotator is nearly zero
+function Rotator:IsNearlyZero(tolerance) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Checks whether all components of the rotator are exactly zero
+---@return boolean @whether the rotator is exactly zero
+function Rotator:IsZero() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Floating point Quaternion that can represent a rotation about an axis in 3-D space
+---@class Quat
+---@field X number @The quaternion's X-component
+---@field Y number @The quaternion's Y-component
+---@field Z number @The quaternion's Z-component
+---@field W number @The quaternion's W-component
+---@operator add(Quat|number): Quat
+---@operator sub(Quat|number): Quat
+---@operator mul(Quat|number): Quat
+---@overload fun(X: number | nil, Y: number | nil, Z: number | nil, W: number | nil): Quat
+Quat = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---In place normalize this Quaternion
+function Quat:Normalize() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Get the Rotator representation of this Quaternion
+---@return Rotator @Rotator representation of this Quaternion
+function Quat:Rotator() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns the inverse of this Quaternion
+---@return Quat @Inverse of this Quaternion
+function Quat:Inverse() end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
 ---
@@ -6161,6 +6258,279 @@ function NanosMath.VInterpTo(current, target, delta_time, interp_speed) end
 ---@param interp_speed number 
 ---@return Vector 
 function NanosMath.VInterpConstantTo(current, target, delta_time, interp_speed) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---A table containing useful and aux functions.
+---@class NanosUtils
+NanosUtils = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns if an entity is valid
+---@param entity any @Entity to verify
+---@return boolean @if the entity is valid
+function NanosUtils.IsEntityValid(entity) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Benchmarks a function performance, outputs in the console the elapsed time
+---@param name string @Benchmark name to output
+---@param amount number @Amount of times to loop
+---@param func function @The function to call
+---@param ... any @The arguments of the function to call
+function NanosUtils.Benchmark(name, amount, func, ...) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---A color composed of components (R, G, B, A) with floating point precision.
+---@class Color
+---@field R number @Red color percentage (0-1)
+---@field G number @Green color percentage (0-1)
+---@field B number @Blue color percentage (0-1)
+---@field A number @Alpha transparency percentage (0-1)
+---@operator add(Color|number): Color
+---@operator sub(Color|number): Color
+---@operator mul(Color|number): Color
+---@operator div(Color|number): Color
+---@overload fun(R: number | nil, G: number | nil, B: number | nil, A: number | nil): Color
+Color = {}
+Color.WHITE = Color(1, 1, 1)
+Color.BLACK = Color(0, 0, 0)
+Color.TRANSPARENT = Color(0, 0, 0, 0)
+Color.RED = Color(1, 0, 0)
+Color.GREEN = Color(0, 1, 0)
+Color.BLUE = Color(0, 0, 1)
+Color.YELLOW = Color(1, 1, 0)
+Color.CYAN = Color(0, 1, 1)
+Color.MAGENTA = Color(1, 0, 1)
+Color.ORANGE = Color(1, 0.5, 0)
+Color.CHARTREUSE = Color(0.5, 1, 1)
+Color.AQUAMARINE = Color(0, 1, 0.5)
+Color.AZURE = Color(0, 0.5, 1)
+Color.VIOLET = Color(0.5, 0, 1)
+Color.ROSE = Color(1, 0, 0.5)
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a random color from Color Palette
+---@param includes_black boolean | nil @Includes blacks in the scope (Default: true)
+---@return Color @Random color from Color Palette
+function Color.RandomPalette(includes_black) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a random color from all color scope
+---@return Color @Random color from all color scope
+function Color.Random() end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns the color from 0-255 range values
+---@param r number | nil @Red (Default: 0)
+---@param g number | nil @Green (Default: 0)
+---@param b number | nil @Blue (Default: 0)
+---@param a number | nil @Alpha (Default: 0)
+---@return Color @Final Color
+function Color.FromRGBA(r, g, b, a) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a color from the CYMK format
+---@param c number | nil @Cyan (Default: 0)
+---@param y number | nil @Yellow (Default: 0)
+---@param m number | nil @Magenta (Default: 0)
+---@param k number | nil @Black (Default: 0)
+---@param a number | nil @Alpha (Default: 0)
+---@return Color @Final Color
+function Color.FromCYMK(c, y, m, k, a) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a color from the HSL format
+---@param h number | nil @Hue (Default: 0)
+---@param s number | nil @Saturation (Default: 0)
+---@param l number | nil @Lightness (Default: 0)
+---@return Color @Final Color
+function Color.FromHSL(h, s, l) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a color from the HSV format
+---@param h number | nil @Hue (Default: 0)
+---@param s number | nil @Saturation (Default: 0)
+---@param v number | nil @Value (Default: 0)
+---@return Color @Final Color
+function Color.FromHSV(h, s, v) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a color from the Hexadecimal format
+---@param hex string @Hexadecimal
+---@return Color @Final Color
+function Color.FromHEX(hex) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Gets the Hexadecimal representation of this Color
+---@param appends_transparency boolean | nil @Appends transparency part (Default: true)
+---@return string @Hexadecimal representation of this Color
+function Color:ToHex(appends_transparency) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---JSON library.
+---@class JSON
+JSON = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a string representing value encoded in JSON
+---@param value table @the table that will become JSON
+---@return string @the table in JSON
+function JSON.stringify(value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a value representing the decoded JSON string
+---@param value string @the JSON that will become a table
+---@return any @the json in table
+function JSON.parse(value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---A table containing useful and aux table functions.
+---@class NanosTable
+NanosTable = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Dumps a table into a readable text
+---@param table table @Table to dump
+---@return string @the table as readable text
+function NanosTable.Dump(table) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Performs a shallow copy of a table
+---@param table table @The table to shallow copy
+---@return table @the copied table
+function NanosTable.ShallowCopy(table) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---TOML library.
+---@class TOML
+TOML = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a string representing value encoded in TOML
+---@param value table @the table that will become TOML
+---@return string @the table in TOML
+function TOML.Dump(value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns a value representing the decoded TOML string
+---@param value string @the TOML that will become a table
+---@return any @the TOML in table
+function TOML.Parse(value) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---A Vector2D composed of components (X, Y) with floating point precision. Used mainly for HUD and Drawing on screen.
+---@class Vector2D
+---@field X number @X Coordinate
+---@field Y number @Y Coordinate
+---@operator add(Vector2D|number): Vector2D
+---@operator sub(Vector2D|number): Vector2D
+---@operator mul(Vector2D|number): Vector2D
+---@operator div(Vector2D|number): Vector2D
+---@overload fun(X: number | nil, Y: number | nil): Vector2D
+Vector2D = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Execute code at specified time intervals.
+---@class Timer
+Timer = {}
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Executes a function, after waiting a specified number of milliseconds
+---@param callback function @The callback that will be executed
+---@param milliseconds integer | nil @The time in milliseconds to wait before executing the function (Default: 0)
+---@param ... any | nil @Additional parameters to pass to the function (Default: nil)
+---@return integer @the timeout_id
+function Timer.SetTimeout(callback, milliseconds, ...) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Same as SetTimeout(), but repeats the execution of the function continuously
+---@param callback function @The callback that will be executed.<br/>Return false to stop it from being called.
+---@param milliseconds integer | nil @The time in milliseconds the timer should delay in between executions of the specified function (Default: 0)
+---@param ... any | nil @Additional parameters to pass to the function (Default: nil)
+---@return integer @the interval_id
+function Timer.SetInterval(callback, milliseconds, ...) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Stops the execution of the function specified in SetTimeout()
+---@param timeout_id integer @The ID value returned by SetTimeout() is used as the parameter for this method
+function Timer.ClearTimeout(timeout_id) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Stops the execution of the function specified in SetInterval()
+---@param interval_id integer @The ID value returned by SetInterval() is used as the parameter for this method
+function Timer.ClearInterval(interval_id) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Binds a Timer to any Actor. The timer will be automatically cleared when the Actor is destroyed
+---@param timer_id integer @The Timer ID
+---@param actor Actor @Actor to be bound
+function Timer.Bind(timer_id, actor) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Checks if a Timer is currently active or waiting to be triggered
+---@param timer_id integer @The Timer ID
+---@return boolean 
+function Timer.IsValid(timer_id) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns the time elapsed since the last tick
+---@param timer_id integer @The Timer ID
+---@return integer 
+function Timer.GetElapsedTime(timer_id) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Returns the time remaining to the next tick
+---@param timer_id integer @The Timer ID
+---@return integer 
+function Timer.GetRemainingTime(timer_id) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Pauses the Timer
+---@param timer_id integer @The Timer ID
+function Timer.Pause(timer_id) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Resumes the Timer
+---@param timer_id integer @The Timer ID
+function Timer.Resume(timer_id) end
+
+---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
+---
+---Resets a Timer to restart from beginning
+---@param timer_id integer @The Timer ID
+function Timer.ResetElapsedTime(timer_id) end
 
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
@@ -6338,145 +6708,6 @@ function Sky.GetWeather() end
 ---@param transition_time number @fade time to completely change to new weather
 function Sky.ChangeWeather(weather, transition_time) end
 
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----A table containing useful and aux functions.
----@class NanosUtils
-NanosUtils = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns if an entity is valid
----@param entity any @Entity to verify
----@return boolean @if the entity is valid
-function NanosUtils.IsEntityValid(entity) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Benchmarks a function performance, outputs in the console the elapsed time
----@param name string @Benchmark name to output
----@param amount number @Amount of times to loop
----@param func function @The function to call
----@param ... any @The arguments of the function to call
-function NanosUtils.Benchmark(name, amount, func, ...) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----A Matrix is an array of numbers this can be used for geometric and positional calculations. This is mainly used internally.
----@class Matrix
----@overload fun(rotation: Rotator, origin: Vector): Matrix
-Matrix = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Transform the vector with the matrix
----@param vector Vector @The vector who will be transformed
----@return Vector @The new vector
-function Matrix:TransformVector(vector) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a new matrix transposed (<a href="https://en.wikipedia.org/wiki/Transpose">Wikipedia</a>)
----@return Matrix @The matrix transpoosed
-function Matrix:GetTransposed() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Interaction with Post Process effects.
----@class PostProcess
-PostProcess = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Set Post Process Bloom Settings
----@param intensity number | nil @(Default: 0.675)
----@param threshold number | nil @(Default: -1)
-function PostProcess.SetBloom(intensity, threshold) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Set Post Process Chromatic Abberation Settings
----@param intensity number | nil @(Default: 0)
----@param start_offset number | nil @(Default: 0)
-function PostProcess.SetChromaticAberration(intensity, start_offset) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Set Post Process Image Effect Settings
----@param vignette_intensity number | nil @(Default: 0.6)
----@param grain_jitter number | nil @(Default: 0)
----@param grain_intensity number | nil @(Default: 0)
-function PostProcess.SetImageEffects(vignette_intensity, grain_jitter, grain_intensity) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Set Post Process Exposure Settings
----@param exposure_compensation number | nil @(Default: 1)
----@param min_ev100 number | nil @(Default: -10)
----@param max_ev100 number | nil @(Default: 20)
----@param low_percent number | nil @(Default: 10)
----@param high_percent number | nil @(Default: 90)
-function PostProcess.SetExposure(exposure_compensation, min_ev100, max_ev100, low_percent, high_percent) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Set Post Process Film Settings
----@param slope number | nil @(Default: 0.8)
----@param toe number | nil @(Default: 0.55)
----@param shoulder number | nil @(Default: 0.26)
----@param black_clip number | nil @(Default: 0)
----@param white_clip number | nil @(Default: 0.3)
-function PostProcess.SetFilm(slope, toe, shoulder, black_clip, white_clip) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Set Post Process Saturation Colors. Use Alpha for everall Saturation intensity
----@param color Color 
-function PostProcess.SetGlobalSaturation(color) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Set Post Process Lookup Table Texture
----@param texture_path string 
-function PostProcess.SetLookupTable(texture_path) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Sets a Post Process Material
----@param material_path string @The Material Asset to set as Post Process
-function PostProcess.SetMaterial(material_path) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Removes the current Post Process Material
-function PostProcess.RemoveMaterial() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Sets the sun's angle (0-360)
----@param angle number 
-function PostProcess.SetSunAngle(angle) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----A table containing useful and aux table functions.
----@class NanosTable
-NanosTable = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Dumps a table into a readable text
----@param table table @Table to dump
----@return string @the table as readable text
-function NanosTable.Dump(table) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Performs a shallow copy of a table
----@param table table @The table to shallow copy
----@return table @the copied table
-function NanosTable.ShallowCopy(table) end
-
 ---<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
 ---
 ---Static Class present on Client side.
@@ -6608,237 +6839,6 @@ function Client.Subscribe(event_name, callback) end
 ---@overload fun(event_name: "SpawnLocalPlayer", callback: fun(local_player: Player)) @Called when the local player spawns (just after the game has loaded)
 ---@overload fun(event_name: "WindowFocusChange", callback: fun(is_focused: boolean)) @Called when the game is focused/unfocused
 function Client.Unsubscribe(event_name, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Floating point Quaternion that can represent a rotation about an axis in 3-D space
----@class Quat
----@field X number @The quaternion's X-component
----@field Y number @The quaternion's Y-component
----@field Z number @The quaternion's Z-component
----@field W number @The quaternion's W-component
----@operator add(Quat|number): Quat
----@operator sub(Quat|number): Quat
----@operator mul(Quat|number): Quat
----@overload fun(X: number | nil, Y: number | nil, Z: number | nil, W: number | nil): Quat
-Quat = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----In place normalize this Quaternion
-function Quat:Normalize() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Get the Rotator representation of this Quaternion
----@return Rotator @Rotator representation of this Quaternion
-function Quat:Rotator() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns the inverse of this Quaternion
----@return Quat @Inverse of this Quaternion
-function Quat:Inverse() end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Trace a ray against the world and get collided objects information.
----@class Trace
-Trace = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Trace a ray against the world and returns a table with the first blocking hit information<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.
----@param start_location Vector @Start location of the ray
----@param end_location Vector @End location of the ray
----@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
----@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
----@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
----@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D } 
-function Trace.LineSingle(start_location, end_location, collision_channel, trace_mode, ignored_actors) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Trace a ray against the world using object types and return overlapping hits and then first blocking hit<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.<br/><br/>Results are sorted, so a blocking hit (if found) will be the last element of the array<br/><br/>Only the single closest blocking result will be generated, no tests will be done after that
----@param start_location Vector @Start location of the ray
----@param end_location Vector @End location of the ray
----@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
----@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
----@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
----@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D }[] 
-function Trace.LineMulti(start_location, end_location, collision_channel, trace_mode, ignored_actors) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Trace a sphere against the world and returns a table with the first blocking hit information<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.
----@param start_location Vector @Start location of the sphere
----@param end_location Vector @End location of the sphere
----@param radius number @Radius of the sphere
----@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
----@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
----@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
----@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D } 
-function Trace.SphereSingle(start_location, end_location, radius, collision_channel, trace_mode, ignored_actors) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Trace a sphere against the world using object types and return overlapping hits and then first blocking hit<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.<br/><br/>Results are sorted, so a blocking hit (if found) will be the last element of the array<br/><br/>Only the single closest blocking result will be generated, no tests will be done after that
----@param start_location Vector @Start location of the sphere
----@param end_location Vector @End location of the sphere
----@param radius number @Radius of the sphere
----@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
----@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
----@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
----@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D }[] 
-function Trace.SphereMulti(start_location, end_location, radius, collision_channel, trace_mode, ignored_actors) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Trace a box against the world and returns a table with the first blocking hit information<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.
----@param start_location Vector @Start location of the box
----@param end_location Vector @End location of the box
----@param half_size Vector @Distance from the center of box along each axis
----@param orientation Rotator @Orientation of the box
----@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
----@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
----@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
----@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D } 
-function Trace.BoxSingle(start_location, end_location, half_size, orientation, collision_channel, trace_mode, ignored_actors) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Trace a box against the world using object types and return overlapping hits and then first blocking hit<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.<br/><br/>Results are sorted, so a blocking hit (if found) will be the last element of the array<br/><br/>Only the single closest blocking result will be generated, no tests will be done after that
----@param start_location Vector @Start location of the box
----@param end_location Vector @End location of the box
----@param half_size Vector @Distance from the center of box along each axis
----@param orientation Rotator @Orientation of the box
----@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
----@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
----@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
----@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D }[] 
-function Trace.BoxMulti(start_location, end_location, half_size, orientation, collision_channel, trace_mode, ignored_actors) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Trace a capsule against the world and returns a table with the first blocking hit information<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.
----@param start_location Vector @Start location of the capsule
----@param end_location Vector @End location of the capsule
----@param radius number @Radius of the capsule to sweep
----@param half_height number @Distance from center of capsule to tip of hemisphere endcap.
----@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
----@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
----@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
----@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D } 
-function Trace.CapsuleSingle(start_location, end_location, radius, half_height, collision_channel, trace_mode, ignored_actors) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Trace a capsule against the world using object types and return overlapping hits and then first blocking hit<br/><br/>Note: The Trace will collide with the ObjectType (in the Collision Settings), even if the channel is ignored below.<br/><br/>Results are sorted, so a blocking hit (if found) will be the last element of the array<br/><br/>Only the single closest blocking result will be generated, no tests will be done after that
----@param start_location Vector @Start location of the capsule
----@param end_location Vector @End location of the capsule
----@param radius number @Radius of the capsule to sweep
----@param half_height number @Distance from center of capsule to tip of hemisphere endcap.
----@param collision_channel CollisionChannel | nil @Supports several channels separating by <code>|</code> (using bit-wise operations) (Default: WorldStatic)
----@param trace_mode TraceMode | nil @Trace Mode, pass all parameters separating by <code>|</code> (using bit-wise operations)<br/><br/>You need to explicitily pass the modes to return the values you want (Default: 0)
----@param ignored_actors Actor[] | nil @Array of actors to ignore during the trace (Default: {})
----@return { Success: boolean, Location: Vector, Normal: Vector, Entity: Actor, BoneName: string, ActorName: string, ComponentName: string, SurfaceType: SurfaceType, UV: Vector2D }[] 
-function Trace.CapsuleMulti(start_location, end_location, radius, half_height, collision_channel, trace_mode, ignored_actors) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Interact with Steam APIs.
----@class Steam
-Steam = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/client-only.png?raw=true" height="10"> `Client Side`
----
----Sets Steam Rich Presence text
----@param text string 
-function Steam.SetRichPresence(text) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----JSON library.
----@class JSON
-JSON = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a string representing value encoded in JSON
----@param value table @the table that will become JSON
----@return string @the table in JSON
-function JSON.stringify(value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a value representing the decoded JSON string
----@param value string @the JSON that will become a table
----@return any @the json in table
-function JSON.parse(value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----HTTP Requests Interface.
----@class HTTP
-HTTP = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Makes an asynchronous HTTP Request.<br/><br/>The request will be made asynchronously and returned safetly in the same thread in the callback provided when it's done.<br/><br/><b>Note:</b> If a request is still running when unloading packages, the server will freeze until it's finished, then the package will unload.
----@param uri string @The main URI (the base address)
----@param endpoint string | nil @The endpoint (Default: "")
----@param method HTTPMethod | nil @The HTTP Method to be used (Default: HTTPMethod.GET)
----@param data string | nil @Payload (Default: "")
----@param content_type string | nil @The <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types'>Content Type</a> to be used (Default: application/json)
----@param compress boolean | nil @Whether or not to compress the content with gzip (Default: false)
----@param headers table | nil @The <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers'>Headers</a> to be used (Default: {})
----@param callback function | nil @The result (Default: nil)
-function HTTP.RequestAsync(uri, endpoint, method, data, content_type, compress, headers, callback) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/server-only.png?raw=true" height="10"> `Server Side`
----
----Makes a synchronous HTTP Request.<br/><br/>The request will be made synchronously and will freeze the server until it's done.
----@param uri string @The main URI (the base address)
----@param endpoint string | nil @The endpoint (Default: "")
----@param method HTTPMethod | nil @The HTTP Method to be used (Default: HTTPMethod.GET)
----@param data string | nil @Payload (Default: "")
----@param content_type string | nil @The <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types'>Content Type</a> to be used (Default: application/json)
----@param compress boolean | nil @Whether or not to compress the content with gzip (Default: false)
----@param headers table | nil @The <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers'>Headers</a> to be used (Default: {})
----@return { Status: integer, Data: string } 
-function HTTP.Request(uri, endpoint, method, data, content_type, compress, headers) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the global Connection Timeout in seconds
----@param connection_timeout integer @The timeout in seconds
-function HTTP.SetConnectionTimeout(connection_timeout) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Sets the global Read and Write Timeout in seconds
----@param read_write_timeout integer @The timeout in seconds
-function HTTP.SetReadWriteTimeout(read_write_timeout) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----TOML library.
----@class TOML
-TOML = {}
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a string representing value encoded in TOML
----@param value table @the table that will become TOML
----@return string @the table in TOML
-function TOML.Dump(value) end
-
----<img src="https://github.com/Derpius/nanosworld-vscode/blob/master/assets/both.png?raw=true" height="10"> `Client/Server Side`
----
----Returns a value representing the decoded TOML string
----@param value string @the TOML that will become a table
----@return any @the TOML in table
-function TOML.Parse(value) end
 
 ---@enum AimMode
 AimMode = {
